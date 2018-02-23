@@ -18,7 +18,7 @@ export default class Sport extends Component {
 
 		fetch(config.api_url + 'posts')
 		.then( res => res.json() )
-		.then( res => this.setState({data: res.data.data}));
+		.then( res => this.setState({data: res.data.data}))
 	}
 
   render() {

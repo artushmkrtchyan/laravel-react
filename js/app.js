@@ -32692,7 +32692,7 @@ ToggleButton.propTypes = propTypes;
 
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+	value: true
 });
 exports.NavBar = undefined;
 
@@ -32706,6 +32706,8 @@ var _reactBootstrap = __webpack_require__(253);
 
 var _reactRouter = __webpack_require__(104);
 
+var _authModal = __webpack_require__(402);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -32715,77 +32717,74 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var NavBar = exports.NavBar = function (_Component) {
-  _inherits(NavBar, _Component);
+	_inherits(NavBar, _Component);
 
-  function NavBar() {
-    _classCallCheck(this, NavBar);
+	function NavBar() {
+		_classCallCheck(this, NavBar);
 
-    return _possibleConstructorReturn(this, (NavBar.__proto__ || Object.getPrototypeOf(NavBar)).apply(this, arguments));
-  }
+		return _possibleConstructorReturn(this, (NavBar.__proto__ || Object.getPrototypeOf(NavBar)).apply(this, arguments));
+	}
 
-  _createClass(NavBar, [{
-    key: 'render',
-    value: function render() {
-      return _react2.default.createElement(
-        _reactBootstrap.Nav,
-        { bsStyle: 'tabs' },
-        _react2.default.createElement(
-          _reactBootstrap.NavItem,
-          { eventKey: '1', href: '/' },
-          'Main'
-        ),
-        _react2.default.createElement(
-          _reactBootstrap.NavItem,
-          { eventKey: '2', href: '#' },
-          _react2.default.createElement(
-            'span',
-            { onClick: function onClick() {
-                _reactRouter.hashHistory.push('category/22');
-              } },
-            'All News'
-          )
-        ),
-        _react2.default.createElement(
-          _reactBootstrap.NavItem,
-          { eventKey: '3', href: '#' },
-          _react2.default.createElement(
-            'span',
-            { onClick: function onClick() {
-                _reactRouter.hashHistory.push('category/2');
-              } },
-            'Sport'
-          )
-        ),
-        _react2.default.createElement(
-          _reactBootstrap.NavDropdown,
-          { eventKey: '4', href: '#', title: 'Dropdown', id: 'nav-dropdown' },
-          _react2.default.createElement(
-            _reactBootstrap.MenuItem,
-            { eventKey: '4.1', href: '#' },
-            'Action'
-          ),
-          _react2.default.createElement(
-            _reactBootstrap.MenuItem,
-            { eventKey: '4.2', href: '#' },
-            'Another action'
-          ),
-          _react2.default.createElement(
-            _reactBootstrap.MenuItem,
-            { eventKey: '4.3', href: '#' },
-            'Something else here'
-          ),
-          _react2.default.createElement(_reactBootstrap.MenuItem, { divider: true }),
-          _react2.default.createElement(
-            _reactBootstrap.MenuItem,
-            { eventKey: '4.4', href: '#' },
-            'Separated link'
-          )
-        )
-      );
-    }
-  }]);
+	_createClass(NavBar, [{
+		key: 'render',
+		value: function render() {
+			return _react2.default.createElement(
+				_reactBootstrap.Navbar,
+				{ collapseOnSelect: true },
+				_react2.default.createElement(
+					_reactBootstrap.Navbar.Collapse,
+					null,
+					_react2.default.createElement(
+						_reactBootstrap.Nav,
+						null,
+						_react2.default.createElement(
+							_reactBootstrap.NavItem,
+							{ eventKey: 1, href: '/' },
+							'Home'
+						),
+						_react2.default.createElement(
+							_reactBootstrap.NavItem,
+							{ eventKey: 2, href: '#' },
+							_react2.default.createElement(
+								'span',
+								{ onClick: function onClick() {
+										_reactRouter.hashHistory.push('posts');
+									} },
+								'Posts'
+							)
+						),
+						_react2.default.createElement(
+							_reactBootstrap.NavDropdown,
+							{ eventKey: 3, title: 'Dropdown', id: 'basic-nav-dropdown' },
+							_react2.default.createElement(
+								_reactBootstrap.MenuItem,
+								{ eventKey: 3.1 },
+								'Action'
+							),
+							_react2.default.createElement(
+								_reactBootstrap.MenuItem,
+								{ eventKey: 3.2 },
+								'Another action'
+							),
+							_react2.default.createElement(_reactBootstrap.MenuItem, { divider: true }),
+							_react2.default.createElement(
+								_reactBootstrap.MenuItem,
+								{ eventKey: 3.3 },
+								'Separated link'
+							)
+						)
+					),
+					_react2.default.createElement(
+						_reactBootstrap.Nav,
+						{ pullRight: true },
+						_react2.default.createElement(_authModal.AuthModal, { className: 'auth' })
+					)
+				)
+			);
+		}
+	}]);
 
-  return NavBar;
+	return NavBar;
 }(_react.Component);
 
 /***/ }),
@@ -44654,6 +44653,391 @@ var Sport = function (_Component) {
 }(_react.Component);
 
 exports.default = Sport;
+
+/***/ }),
+/* 402 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.AuthModal = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(1);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactBootstrap = __webpack_require__(253);
+
+var _auth = __webpack_require__(403);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var AuthModal = exports.AuthModal = function (_Component) {
+  _inherits(AuthModal, _Component);
+
+  function AuthModal(props) {
+    _classCallCheck(this, AuthModal);
+
+    var _this = _possibleConstructorReturn(this, (AuthModal.__proto__ || Object.getPrototypeOf(AuthModal)).call(this, props));
+
+    _this.state = {
+      showModalUp: false,
+      showModalIn: false
+    };
+    _this.openUp = _this.openUp.bind(_this);
+    _this.closeUp = _this.closeUp.bind(_this);
+
+    _this.openIn = _this.openIn.bind(_this);
+    _this.closeIn = _this.closeIn.bind(_this);
+    return _this;
+  }
+
+  _createClass(AuthModal, [{
+    key: 'closeUp',
+    value: function closeUp() {
+      this.setState({ showModalUp: false });
+    }
+  }, {
+    key: 'openUp',
+    value: function openUp() {
+      this.setState({ showModalUp: true });
+    }
+  }, {
+    key: 'closeIn',
+    value: function closeIn() {
+      this.setState({ showModalIn: false });
+    }
+  }, {
+    key: 'openIn',
+    value: function openIn() {
+      this.setState({ showModalIn: true });
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      return _react2.default.createElement(
+        'div',
+        { className: 'account-buttons' },
+        _react2.default.createElement(
+          'div',
+          { className: 'main-modal' },
+          _react2.default.createElement(
+            'span',
+            { className: 'sign-up', onClick: this.openUp },
+            'Sign Up'
+          ),
+          _react2.default.createElement(
+            'span',
+            { className: 'sign-in', onClick: this.openIn },
+            'Sign In'
+          ),
+          _react2.default.createElement(
+            _reactBootstrap.Modal,
+            { show: this.state.showModalUp, onHide: this.closeUp },
+            _react2.default.createElement(
+              _reactBootstrap.Modal.Header,
+              { closeButton: true },
+              _react2.default.createElement(
+                _reactBootstrap.Modal.Title,
+                null,
+                'Create account'
+              )
+            ),
+            _react2.default.createElement(
+              _reactBootstrap.Modal.Body,
+              null,
+              _react2.default.createElement(_auth.SignUp, { hideModalSignUp: this.closeUp })
+            ),
+            _react2.default.createElement(
+              _reactBootstrap.Modal.Footer,
+              null,
+              _react2.default.createElement(
+                _reactBootstrap.Button,
+                { onClick: this.closeUp },
+                'Close'
+              )
+            )
+          ),
+          _react2.default.createElement(
+            _reactBootstrap.Modal,
+            { show: this.state.showModalIn, onHide: this.closeIn },
+            _react2.default.createElement(
+              _reactBootstrap.Modal.Header,
+              { closeButton: true },
+              _react2.default.createElement(
+                _reactBootstrap.Modal.Title,
+                null,
+                'Login form'
+              )
+            ),
+            _react2.default.createElement(
+              _reactBootstrap.Modal.Body,
+              null,
+              _react2.default.createElement(_auth.SignIn, { hideModalSignIn: this.closeIn })
+            ),
+            _react2.default.createElement(
+              _reactBootstrap.Modal.Footer,
+              null,
+              _react2.default.createElement(
+                _reactBootstrap.Button,
+                { onClick: this.closeIn },
+                'Close'
+              )
+            )
+          )
+        )
+      );
+    }
+  }]);
+
+  return AuthModal;
+}(_react.Component);
+
+/***/ }),
+/* 403 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.SignIn = exports.SignUp = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(1);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactBootstrap = __webpack_require__(253);
+
+var _config = __webpack_require__(400);
+
+var _config2 = _interopRequireDefault(_config);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+// import $ from 'jquery';
+
+var SignUp = exports.SignUp = function (_Component) {
+  _inherits(SignUp, _Component);
+
+  function SignUp(props) {
+    _classCallCheck(this, SignUp);
+
+    var _this = _possibleConstructorReturn(this, (SignUp.__proto__ || Object.getPrototypeOf(SignUp)).call(this, props));
+
+    _this.state = {
+      form_data: {
+        SignUp: 'signUp',
+        Name: '',
+        Email: '',
+        Password: '',
+        ConfirmPassword: '',
+        Description: '',
+        Avatar: ''
+      },
+      data: ''
+    };
+
+    _this.changeHandle = _this.changeHandle.bind(_this);
+    return _this;
+  }
+
+  _createClass(SignUp, [{
+    key: 'signup',
+    value: function signup() {
+      // $.ajax({
+      //   url: conf.wp_ajax_path + 'user.php',
+      //   type: 'post',
+      //   data: this.state.form_data,
+      //   success: data => {
+      //     this.setState({data})
+      //     if(data == 'success'){
+      //         this.props.hideModalSignUp()
+      //     }
+      //   }
+      // });
+    }
+  }, {
+    key: 'changeHandle',
+    value: function changeHandle(e) {
+      var input_name = e.target.getAttribute('name');
+      var input_value = e.target.value;
+      this.state.form_data[input_name] = input_value;
+
+      this.setState(this.state);
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      return _react2.default.createElement(
+        _reactBootstrap.FormGroup,
+        null,
+        _react2.default.createElement(_reactBootstrap.FormControl, { name: 'SignUp', type: 'hidden', value: 'signUp' }),
+        _react2.default.createElement(
+          _reactBootstrap.ControlLabel,
+          null,
+          'Name:'
+        ),
+        _react2.default.createElement(_reactBootstrap.FormControl, { name: 'name', type: 'input', onChange: this.changeHandle }),
+        _react2.default.createElement(
+          _reactBootstrap.ControlLabel,
+          null,
+          'Email:'
+        ),
+        _react2.default.createElement(_reactBootstrap.FormControl, { name: 'email', type: 'email', onChange: this.changeHandle }),
+        _react2.default.createElement(
+          _reactBootstrap.ControlLabel,
+          null,
+          'Password:'
+        ),
+        _react2.default.createElement(_reactBootstrap.FormControl, { name: 'password', type: 'password', onChange: this.changeHandle }),
+        _react2.default.createElement(
+          _reactBootstrap.ControlLabel,
+          null,
+          'Confirm Password:'
+        ),
+        _react2.default.createElement(_reactBootstrap.FormControl, { name: 'confirm_password', type: 'password', onChange: this.changeHandle }),
+        _react2.default.createElement(
+          _reactBootstrap.ControlLabel,
+          null,
+          'Description:'
+        ),
+        _react2.default.createElement(_reactBootstrap.FormControl, { componentClass: 'textarea', name: 'description', onChange: this.changeHandle }),
+        this.state.data ? _react2.default.createElement(
+          _reactBootstrap.ListGroup,
+          { className: 'error-mesage' },
+          _react2.default.createElement(
+            _reactBootstrap.ListGroupItem,
+            { bsStyle: 'danger' },
+            _react2.default.createElement('span', { dangerouslySetInnerHTML: { __html: this.state.data } })
+          )
+        ) : '',
+        _react2.default.createElement(
+          _reactBootstrap.Button,
+          { onClick: this.signup.bind(this), className: 'create_account submit-form', name: 'create_account', bsStyle: 'primary', bsSize: 'small' },
+          'Sign Up'
+        )
+      );
+    }
+  }]);
+
+  return SignUp;
+}(_react.Component);
+
+var SignIn = exports.SignIn = function (_Component2) {
+  _inherits(SignIn, _Component2);
+
+  function SignIn(props) {
+    _classCallCheck(this, SignIn);
+
+    var _this2 = _possibleConstructorReturn(this, (SignIn.__proto__ || Object.getPrototypeOf(SignIn)).call(this, props));
+
+    _this2.state = {
+      login_data: {
+        email: '',
+        password: '',
+        remember: ''
+      },
+      data: ''
+    };
+
+    _this2.changeHandle = _this2.changeHandle.bind(_this2);
+    return _this2;
+  }
+
+  _createClass(SignIn, [{
+    key: 'signin',
+    value: function signin() {
+      var _this3 = this;
+
+      fetch(_config2.default.api_url + 'login', {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: JSON.stringify(this.state.login_data)
+      }).then(function (res) {
+        return res.json();
+      }).then(function (data) {
+        return _this3.setState({ data: data });
+      });
+    }
+  }, {
+    key: 'changeHandle',
+    value: function changeHandle(e) {
+      var inputName = e.target.getAttribute('name');
+      var inputValue = e.target.value;
+      this.state.login_data[inputName] = inputValue;
+
+      this.setState(this.state);
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      return _react2.default.createElement(
+        _reactBootstrap.FormGroup,
+        null,
+        _react2.default.createElement(_reactBootstrap.FormControl, { name: 'SignIn', type: 'hidden', value: 'signin' }),
+        _react2.default.createElement(
+          _reactBootstrap.ControlLabel,
+          null,
+          'Email:'
+        ),
+        _react2.default.createElement(_reactBootstrap.FormControl, { name: 'email', type: 'input', onChange: this.changeHandle }),
+        _react2.default.createElement(
+          _reactBootstrap.ControlLabel,
+          null,
+          'Password:'
+        ),
+        _react2.default.createElement(_reactBootstrap.FormControl, { name: 'password', type: 'password', onChange: this.changeHandle }),
+        _react2.default.createElement(
+          _reactBootstrap.Checkbox,
+          { name: 'remember', className: 'remember-me', onChange: this.changeHandle },
+          'Remember me'
+        ),
+        this.state.data ? _react2.default.createElement(
+          _reactBootstrap.ListGroup,
+          { className: 'error-mesage' },
+          _react2.default.createElement(
+            _reactBootstrap.ListGroupItem,
+            { bsStyle: 'danger' },
+            _react2.default.createElement('span', { dangerouslySetInnerHTML: { __html: this.state.data } })
+          )
+        ) : '',
+        _react2.default.createElement(
+          _reactBootstrap.Button,
+          { onClick: this.signin.bind(this), className: 'login submit-form', name: 'login', bsStyle: 'primary', bsSize: 'small' },
+          'Sign In'
+        )
+      );
+    }
+  }]);
+
+  return SignIn;
+}(_react.Component);
 
 /***/ })
 /******/ ]);

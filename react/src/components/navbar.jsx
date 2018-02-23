@@ -1,22 +1,28 @@
 import React, { Component } from 'react';
-import {Nav, NavItem, NavDropdown, MenuItem } from 'react-bootstrap';
+import {Nav, Navbar, NavItem, NavDropdown, MenuItem } from 'react-bootstrap';
 import {hashHistory} from 'react-router';
+import {AuthModal} from './authModal.jsx';
 
 export class NavBar extends Component {
-  render() {
-    return (
-      <Nav bsStyle="tabs">
-        <NavItem eventKey="1" href="/">Main</NavItem>
-        <NavItem eventKey="2" href="#"><span onClick={() => { hashHistory.push('category/22') }}>All News</span></NavItem>
-        <NavItem eventKey="3" href="#"><span onClick={() => { hashHistory.push('category/2') }}>Sport</span></NavItem>
-        <NavDropdown eventKey="4" href="#" title="Dropdown" id="nav-dropdown">
-          <MenuItem eventKey="4.1" href="#">Action</MenuItem>
-          <MenuItem eventKey="4.2" href="#">Another action</MenuItem>
-          <MenuItem eventKey="4.3" href="#">Something else here</MenuItem>
-          <MenuItem divider />
-          <MenuItem eventKey="4.4" href="#">Separated link</MenuItem>
-        </NavDropdown>
-      </Nav>
-    );
-  }
+	render() {
+		return (
+			<Navbar collapseOnSelect>
+				<Navbar.Collapse>
+					<Nav>
+						<NavItem eventKey={1} href="/">Home</NavItem>
+						<NavItem eventKey={2} href="#"><span onClick={() => { hashHistory.push('posts') }}>Posts</span></NavItem>
+						<NavDropdown eventKey={3} title="Dropdown" id="basic-nav-dropdown">
+							<MenuItem eventKey={3.1}>Action</MenuItem>
+							<MenuItem eventKey={3.2}>Another action</MenuItem>
+							<MenuItem divider />
+							<MenuItem eventKey={3.3}>Separated link</MenuItem>
+						</NavDropdown>
+						</Nav>
+						<Nav pullRight>
+						<AuthModal className="auth"></AuthModal>
+					</Nav>
+				</Navbar.Collapse>
+			</Navbar>
+		)
+	}
 }
