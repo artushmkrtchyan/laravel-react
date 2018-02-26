@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import {Col, Row } from 'react-bootstrap';
 import { Link } from 'react-router';
+import Services from '../service'
+
 import { NavBar } from '../components/navbar.jsx';
 import config from '../../config';
 
-export default class Sport extends Component {
+export default class Posts extends Component {
 
 	constructor(props) {
 			super(props);
@@ -16,9 +18,10 @@ export default class Sport extends Component {
 
 	componentWillMount() {
 
-		fetch(config.api_url + 'posts')
-		.then( res => res.json() )
-		.then( res => this.setState({data: res.data.data}))
+		Services.posts()
+		.then( res => {
+			this.setState({data: res.data.data})
+		})
 	}
 
   render() {

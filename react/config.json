@@ -1,6 +1,6 @@
 {
   "home_url": "/laravel-react/#/",
-  "api_url": "http://local.laravel/api/v1/",
+  "api_url": "http://local.laravel/api/v1",
   "assets_url": "/assets",
   "img_url": "http://local.laravel/storage/uploads/"
 }

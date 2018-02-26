@@ -1,21 +1,26 @@
 import React, { Component } from 'react';
 import {Button, Col, Row, Modal } from 'react-bootstrap';
+import { hashHistory } from 'react-router';
 import {SignIn, SignUp} from './auth.jsx';
+import Services from '../service'
 
 export class AuthModal extends Component {
 
   constructor(props) {
+
       super(props);
       this.state = {
           showModalUp:false,
-          showModalIn:false
+          showModalIn:false,
+          token:window.localStorage.getItem('user')
       }
-      this.openUp          = this.openUp.bind(this);
-      this.closeUp         = this.closeUp.bind(this);
+      this.openUp  = this.openUp.bind(this);
+      this.closeUp = this.closeUp.bind(this);
 
-      this.openIn          = this.openIn.bind(this);
-      this.closeIn         = this.closeIn.bind(this);
+      this.openIn  = this.openIn.bind(this);
+      this.closeIn = this.closeIn.bind(this);
   }
+
   closeUp() {
       this.setState({ showModalUp: false });
   }
@@ -30,12 +35,27 @@ export class AuthModal extends Component {
       this.setState({ showModalIn: true });
   }
 
+  logOut() {
+
+        Services.logout()
+        .then( data => {
+          if(data.success) {
+            window.localStorage.removeItem('user');
+            hashHistory.push('/home');
+          }
+        });
+    }
+
+
+
   render() {
     return (
       <div className="account-buttons">
           <div className="main-modal">
-              <span className="sign-up" onClick={this.openUp}>Sign Up</span>
-              <span className="sign-in" onClick={this.openIn}>Sign In</span>
+          {
+            this.state.token ? <div><span className="sign-up" onClick={this.logOut}>Logout</span></div> : 
+            <div><span className="sign-in" onClick={this.openIn}>Sign In</span><span className="sign-up" onClick={this.openUp}>Sign up</span></div>
+          }
 
               <Modal show={this.state.showModalUp} onHide={this.closeUp}>
                 <Modal.Header closeButton>
