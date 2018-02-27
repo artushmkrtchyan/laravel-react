@@ -9,7 +9,7 @@ export class NavBar extends Component {
 			<Navbar collapseOnSelect>
 				<Navbar.Collapse>
 					<Nav>
-						<NavItem eventKey={1} href="/">Home</NavItem>
+						<NavItem eventKey={1} href="#"><span onClick={() => { hashHistory.push('home') }}>Home</span></NavItem>
 						<NavItem eventKey={2} href="#"><span onClick={() => { hashHistory.push('posts') }}>Posts</span></NavItem>
 						<NavDropdown eventKey={3} title="Dropdown" id="basic-nav-dropdown">
 							<MenuItem eventKey={3.1}>Action</MenuItem>

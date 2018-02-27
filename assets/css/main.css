@@ -7,3 +7,11 @@
 	margin: 0 10px;
 	cursor: pointer;
 }
+
+.account-section .avatar {
+	margin-bottom: 10px;
+}
+
+.user-setings button {
+	margin-right: 10px;
+}

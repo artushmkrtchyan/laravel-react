@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import {Form, FormGroup, ControlLabel, FormControl, Button, Checkbox, Col, Row, Modal, ListGroup, ListGroupItem} from 'react-bootstrap';
-import { hashHistory } from 'react-router'
-import Services from '../service'
+import { hashHistory } from 'react-router';
+import Services from '../service';
 import config from '../../config';
-// import $ from 'jquery';
 
 export class SignUp extends Component {
   constructor(props) {
@@ -32,7 +31,7 @@ export class SignUp extends Component {
         .then( data => {
         if('token' in data) {
           window.localStorage.setItem('user', data.token)
-          hashHistory.push('/posts')
+          hashHistory.push('/account')
         }else if(data.error.email){
           this.setState({data: data.error.email})
         }else if(data.error.password){
@@ -99,7 +98,7 @@ export class SignIn extends Component {
       .then( data => {
         if('token' in data.success) {
           window.localStorage.setItem('user', data.success.token)
-          hashHistory.push('/posts')
+          hashHistory.push('/account')
         }
       })
       .catch(this.setState({data: 'Incorrect email or password'}));
