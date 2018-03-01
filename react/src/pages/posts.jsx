@@ -38,8 +38,8 @@ export default class Posts extends Component {
 							<Link to={"post/"+post.id}>
 	        					<div className="post-title"><span dangerouslySetInnerHTML={{__html: post.title}}></span> </div>
 	        					<div className="post-img"><img src={config.img_url+'posts/'+post.image} alt="" /></div>
-	                          	<div className="post-excerpt"><span dangerouslySetInnerHTML={{__html: post.content}}></span> </div>
-	                        </Link>
+	                  <div className="post-excerpt"><span dangerouslySetInnerHTML={{__html: post.content}}></span> </div>
+	            </Link>
 	      				</div>
 	                </Col>
 	  				))
