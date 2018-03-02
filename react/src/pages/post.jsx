@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Col, Row } from 'react-bootstrap';
+import {Col, Row, container } from 'react-bootstrap';
 import Services from '../service'
 import { NavBar } from '../components/navbar.jsx';
 import config from '../../config';

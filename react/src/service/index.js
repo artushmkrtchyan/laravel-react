@@ -12,4 +12,6 @@ export default {
 	post: postID => fetcher('/posts/'+postID),
 	products: () => fetcher('/products'),
 	product: productID => fetcher('/products/'+productID),
+	addpost: postData => fetcher('/posts', 'POST', postData),
+	categories: categories => fetcher('/category'),
 }

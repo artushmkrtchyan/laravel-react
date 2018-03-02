@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {Form, FormGroup, ControlLabel, FormControl, ListGroup, ListGroupItem, Col, Row, Button, Modal } from 'react-bootstrap';
-import { hashHistory } from 'react-router';
+import { hashHistory, Link } from 'react-router';
 import Services from '../service';
 import { NavBar } from '../components/navbar.jsx';
 import config from '../../config';
@@ -83,6 +83,9 @@ export default class Account extends Component {
 										<div className="user-setings">
 											<Button bsSize="xsmall" bsStyle="danger" onClick={this.DeleteUser.bind(this)}>Delete</Button>
 											<Button bsSize="xsmall" onClick={this.handleShow}>Edit</Button>
+											<Link to={"add-post"}>
+												<Button bsSize="xsmall">Add Post</Button>
+											</Link>
 											<Modal show={this.state.show} onHide={this.handleClose}>
 				                <Modal.Header closeButton>
 				                  <Modal.Title>Edit account</Modal.Title>

@@ -8,6 +8,7 @@ import Posts from '../pages/posts.jsx';
 import Post from '../pages/post.jsx';
 import Products from '../pages/products.jsx';
 import Product from '../pages/product.jsx';
+import AddPosts from '../pages/addPost.jsx';
 
 export default (<Route path="/">
 	<IndexRedirect to="/home"/>
@@ -17,5 +18,6 @@ export default (<Route path="/">
 	<Route path="/post/:postId" component={Post} />
 	<Route path="/products" component={Products} />
 	<Route path="/product/:productID" component={Product} />
+	<Route path="/add-post" component={AddPosts} />
 
 </Route>)

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Col, Row } from 'react-bootstrap';
+import {Col, Row, container } from 'react-bootstrap';
 import { Link } from 'react-router';
 import Services from '../service'
 
@@ -27,26 +27,30 @@ export default class Posts extends Component {
   render() {
 		return (
 
-        <div className="container">
+      <div className="container">
         <NavBar></NavBar>
         	<div className="posts-section">
-	          	<Row>
-	    		{
-	  				this.state.data.map( (post, key) => (
-	                <Col key={key}  xs={3}>
-	      				<div id={"post_"+post.id} className="post-item">
-							<Link to={"post/"+post.id}>
-	        					<div className="post-title"><span dangerouslySetInnerHTML={{__html: post.title}}></span> </div>
-	        					<div className="post-img"><img src={config.img_url+'posts/'+post.image} alt="" /></div>
-	                  <div className="post-excerpt"><span dangerouslySetInnerHTML={{__html: post.content}}></span> </div>
-	            </Link>
-	      				</div>
-	                </Col>
-	  				))
-	    		}
-	          	</Row>
-	        </div>
+	        	<Row>
+		    		{
+		  				this.state.data.map( (post, key) => (
+	              <Col key={key}  xs={3}>
+		      				<div id={"post_"+post.id} className="post-item">
+										<Link to={"post/"+post.id}>
+				        					<div className="post-title"><span dangerouslySetInnerHTML={{__html: post.title}}></span> </div>
+				            </Link>
+										<Link to={"post/"+post.id}>
+				        					<div className="post-img"><img src={config.img_url+'posts/'+post.image} alt="" /></div>
+				            </Link>
+										<Link to={"post/"+post.id}>
+				                  <div className="post-excerpt"><span dangerouslySetInnerHTML={{__html: post.content}}></span> </div>
+				            </Link>
+		      				</div>
+	              </Col>
+		  				))
+		    		}
+	         </Row>
         </div>
+      </div>
     );
   }
 }
