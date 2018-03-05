@@ -17,6 +17,7 @@ export default class Account extends Component {
 			this.state = {
 				show: false,
 				userID: '',
+				posts: [],
         data: {
 					name: '',
 					email: '',
@@ -40,6 +41,14 @@ export default class Account extends Component {
 			this.setState({data: res.data, userID:res.data.id})
 		})
 	}
+
+componentDidMount() {
+	Services.postsUser()
+	.then( res => {
+		this.setState({posts: res.data})
+		console.log(res.data);
+	})
+}
 
 	DeleteUser() {
 		Services.deleteuser(this.state.userID)
@@ -114,6 +123,19 @@ export default class Account extends Component {
 				      				<div id={"user_"+this.state.data.id}>
 				        					<div className="user-name"><span dangerouslySetInnerHTML={{__html: this.state.data.name}}></span></div>
 				                  <div className="user-description"><span dangerouslySetInnerHTML={{__html: this.state.data.description}}></span></div>
+				      				</div>
+	                </Col>
+							</Row>
+							<Row>
+									<Col  xs={9}>
+				      				<div className="user-posts">
+												{
+													this.state.posts.map( (post, key) => (
+														<Link key={key} to={"add-post"}>
+						        					<div  className="item-post"><span dangerouslySetInnerHTML={{__html: post.title}}></span></div>
+														</Link>
+													))
+												}
 				      				</div>
 	                </Col>
 	          	</Row>

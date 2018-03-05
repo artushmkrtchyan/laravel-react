@@ -11,12 +11,13 @@ export default class AddPost extends Component {
 			super(props);
 
 			this.state = {
+				error: '',
         category: [],
         postData: {
           title: '',
           content: '',
           status: '',
-          image: [],
+          image: '',
           categories: [],
         }
 			}
@@ -38,7 +39,9 @@ export default class AddPost extends Component {
 		.then( res => {
         if(res.success){
     			hashHistory.push('/account')
-        }
+        }else{
+					this.state.error = 'title required';
+				}
 		})
 	}
 
@@ -69,6 +72,7 @@ export default class AddPost extends Component {
   }
 
   render() {
+		console.log(this.state.error);
 		return (
 
         <div className="container">
@@ -95,9 +99,9 @@ export default class AddPost extends Component {
                                 }
                               </FormControl>
                             </FormGroup>
-                            {this.state.data ?
+                            {this.state.error ?
                               <ListGroup className="error-mesage">
-                                <ListGroupItem bsStyle="danger"><span dangerouslySetInnerHTML={{__html: this.state.data}}></span></ListGroupItem>
+                                <ListGroupItem bsStyle="danger"><span dangerouslySetInnerHTML={{__html: this.state.error}}></span></ListGroupItem>
                               </ListGroup> : ''
                              }
                             <Button onClick={this.addNewPost.bind(this)} type="submit" className="create_account submit-form" name="create_account" bsStyle="primary" bsSize="small">Add</Button>
