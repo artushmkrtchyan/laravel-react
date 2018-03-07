@@ -3,17 +3,20 @@ import { fetcher } from './fetch'
 export default {
 	login: credentials => fetcher('/login', 'POST', credentials),
 	register: Register => fetcher('/register', 'POST', Register),
-	logout: LogOut => fetcher('/logout', 'POST'),
-	account: Account => fetcher('/details', 'POST'),
-	deleteuser: DeleteUser => fetcher('/users/'+DeleteUser, 'DELETE'),
-	edituser: (userID, EditUser) => fetcher('/users/'+userID, 'PUT', EditUser),
-	postsUser: userID =>fetcher('/userposts', 'POST'),
+	logout: () => fetcher('/logout', 'POST'),
+	account: () => fetcher('/details', 'POST'),
+	deleteUser: userID => fetcher('/users/'+userID, 'DELETE'),
+	editUser: (userID, EditUser) => fetcher('/users/'+userID, 'PUT', EditUser),
+	postsUser: () =>fetcher('/userposts', 'POST'),
 
 	posts: () => fetcher('/posts'),
+	postsCount: count => fetcher('/posts?count='+count),
 	post: postID => fetcher('/posts/'+postID),
+	addPost: postData => fetcher('/posts', 'POST', postData),
+	editPost: (postID, postData) => fetcher('/posts/'+postID, 'PUT', postData),
+	deletePost: postID => fetcher('/posts/'+postID, 'DELETE'),
+
 	products: () => fetcher('/products'),
 	product: productID => fetcher('/products/'+productID),
-	addpost: postData => fetcher('/posts', 'POST', postData),
-	editpost: (postID, postData) => fetcher('/posts/'+postID, 'PUT', postData),
-	categories: categories => fetcher('/category'),
+	categories: () => fetcher('/category'),
 }

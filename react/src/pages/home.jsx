@@ -1,19 +1,31 @@
 import React, { Component } from 'react';
 import { NavBar } from '../components/navbar.jsx';
-import { container } from 'react-bootstrap';
+import { Grid, Button, Row, Col } from 'react-bootstrap';
+import { Link } from 'react-router';
+import Services from '../service';
+import config from '../../config';
 
-export default class Main extends Component {
+export default class Home extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            show:false,
-            showModal:false
+          count: 3,
+          show:false,
+          showModal:false,
+          data: []
         }
 
         this.onButtonClick = this.onButtonClick.bind(this);
-        this.open          = this.open.bind(this);
-        this.close         = this.close.bind(this);
+    }
+
+    componentWillMount() {
+      Services.postsCount(this.state.count)
+      .then( res => {
+  			this.setState({data: res.data})
+  		}).catch(error => {
+        this.setState({data: error})
+      })
     }
 
     onButtonClick(event) {
@@ -24,29 +36,42 @@ export default class Main extends Component {
         }
     }
 
-    close() {
-        this.setState({ showModal: false });
-    }
-
-    open() {
-        this.setState({ showModal: true });
-    }
-
     render() {
         let show = this.state.show;
 
         return (
-            <div className="container">
-            <NavBar></NavBar>
-                <div className="main-container home-page">
-                    <div className="bootstrap-test">
-                        <div onClick={this.onButtonClick} >Something</div>
-                    </div>
-                    {
-                        show ? "asdasdasdasdasd" : "chka"
-                    }
-                </div>
-            </div>
+            <Grid>
+              <NavBar></NavBar>
+              <div className="main-container home-page">
+                  <div className="section-1">
+                      <Row>
+          		    		{
+          		  				this.state.data.map( (post, key) => (
+          	              <Col key={key}  xs={4}>
+          		      				<div className="lists-1">
+          										<Link to={"post/"+post.id}>
+          				        					<div className="item-title"><span dangerouslySetInnerHTML={{__html: post.title}}></span> </div>
+          				            </Link>
+          										<Link to={"post/"+post.id}>
+          				        					<div className="item-img"><img src={config.img_url+'posts/'+post.image} alt="" /></div>
+          				            </Link>
+          										<Link to={"post/"+post.id}>
+          				                  <div className="item-excerpt"><span dangerouslySetInnerHTML={{__html: post.content}}></span> </div>
+          				            </Link>
+          		      				</div>
+          	              </Col>
+          		  				))
+          		    		}
+          	         </Row>
+                  </div>
+                  <div className="bootstrap-test">
+                      <Button bsStyle="primary" bsSize="small" onClick={this.onButtonClick}>Something</Button>
+                  </div>
+                  {
+                      show ? "asdasdasdasdasd" : "chka"
+                  }
+              </div>
+            </Grid>
         );
     }
 }

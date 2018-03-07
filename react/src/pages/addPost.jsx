@@ -35,7 +35,7 @@ export default class AddPost extends Component {
 
     e.preventDefault()
 
-		Services.addpost(this.state.postData)
+		Services.addPost(this.state.postData)
 		.then( res => {
         if(res.success){
     			hashHistory.push('/account')
@@ -68,11 +68,9 @@ export default class AddPost extends Component {
       }
       this.state.postData[inputName] = inputValue;
       this.setState(this.state);
-      console.log(this.state.postData);
   }
 
   render() {
-		console.log(this.state.error);
 		return (
 
         <div className="container">
@@ -85,7 +83,7 @@ export default class AddPost extends Component {
                             <ControlLabel>Title:</ControlLabel>
                             <FormControl type="text" name="title" onChange={this.changeHandle} />
                             <ControlLabel>Content:</ControlLabel>
-                            <FormControl componentClass="textarea" name="content" onChange={this.changeHandle} />
+                            <FormControl componentClass="textarea" rows={10} name="content" onChange={this.changeHandle} />
                             <ControlLabel>Image:</ControlLabel>
                             <FormControl type="file" name="image" onChange={this.changeHandle} />
                             <Checkbox name="status" onChange={this.changeHandle}>Status</Checkbox>

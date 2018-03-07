@@ -2118,41 +2118,48 @@ exports.default = {
 	register: function register(Register) {
 		return (0, _fetch.fetcher)('/register', 'POST', Register);
 	},
-	logout: function logout(LogOut) {
+	logout: function logout() {
 		return (0, _fetch.fetcher)('/logout', 'POST');
 	},
-	account: function account(Account) {
+	account: function account() {
 		return (0, _fetch.fetcher)('/details', 'POST');
 	},
-	deleteuser: function deleteuser(DeleteUser) {
-		return (0, _fetch.fetcher)('/users/' + DeleteUser, 'DELETE');
+	deleteUser: function deleteUser(userID) {
+		return (0, _fetch.fetcher)('/users/' + userID, 'DELETE');
 	},
-	edituser: function edituser(userID, EditUser) {
+	editUser: function editUser(userID, EditUser) {
 		return (0, _fetch.fetcher)('/users/' + userID, 'PUT', EditUser);
 	},
-	postsUser: function postsUser(userID) {
+	postsUser: function postsUser() {
 		return (0, _fetch.fetcher)('/userposts', 'POST');
 	},
 
 	posts: function posts() {
 		return (0, _fetch.fetcher)('/posts');
 	},
+	postsCount: function postsCount(count) {
+		return (0, _fetch.fetcher)('/posts?count=' + count);
+	},
 	post: function post(postID) {
 		return (0, _fetch.fetcher)('/posts/' + postID);
 	},
+	addPost: function addPost(postData) {
+		return (0, _fetch.fetcher)('/posts', 'POST', postData);
+	},
+	editPost: function editPost(postID, postData) {
+		return (0, _fetch.fetcher)('/posts/' + postID, 'PUT', postData);
+	},
+	deletePost: function deletePost(postID) {
+		return (0, _fetch.fetcher)('/posts/' + postID, 'DELETE');
+	},
+
 	products: function products() {
 		return (0, _fetch.fetcher)('/products');
 	},
 	product: function product(productID) {
 		return (0, _fetch.fetcher)('/products/' + productID);
 	},
-	addpost: function addpost(postData) {
-		return (0, _fetch.fetcher)('/posts', 'POST', postData);
-	},
-	editpost: function editpost(postID, postData) {
-		return (0, _fetch.fetcher)('/posts/' + postID, 'PUT', postData);
-	},
-	categories: function categories(_categories) {
+	categories: function categories() {
 		return (0, _fetch.fetcher)('/category');
 	}
 };
@@ -33023,6 +33030,10 @@ var _addPost = __webpack_require__(366);
 
 var _addPost2 = _interopRequireDefault(_addPost);
 
+var _editPost = __webpack_require__(367);
+
+var _editPost2 = _interopRequireDefault(_editPost);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = _react2.default.createElement(
@@ -33035,7 +33046,8 @@ exports.default = _react2.default.createElement(
 	_react2.default.createElement(_reactRouter.Route, { path: '/post/:postId', component: _post2.default }),
 	_react2.default.createElement(_reactRouter.Route, { path: '/products', component: _products2.default }),
 	_react2.default.createElement(_reactRouter.Route, { path: '/product/:productID', component: _product2.default }),
-	_react2.default.createElement(_reactRouter.Route, { path: '/add-post', component: _addPost2.default })
+	_react2.default.createElement(_reactRouter.Route, { path: '/add-post', component: _addPost2.default }),
+	_react2.default.createElement(_reactRouter.Route, { path: '/edit-post/:postId', component: _editPost2.default })
 );
 
 /***/ }),
@@ -33059,6 +33071,16 @@ var _navbar = __webpack_require__(32);
 
 var _reactBootstrap = __webpack_require__(18);
 
+var _reactRouter = __webpack_require__(21);
+
+var _service = __webpack_require__(29);
+
+var _service2 = _interopRequireDefault(_service);
+
+var _config = __webpack_require__(30);
+
+var _config2 = _interopRequireDefault(_config);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -33067,26 +33089,37 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var Main = function (_Component) {
-    _inherits(Main, _Component);
+var Home = function (_Component) {
+    _inherits(Home, _Component);
 
-    function Main(props) {
-        _classCallCheck(this, Main);
+    function Home(props) {
+        _classCallCheck(this, Home);
 
-        var _this = _possibleConstructorReturn(this, (Main.__proto__ || Object.getPrototypeOf(Main)).call(this, props));
+        var _this = _possibleConstructorReturn(this, (Home.__proto__ || Object.getPrototypeOf(Home)).call(this, props));
 
         _this.state = {
+            count: 3,
             show: false,
-            showModal: false
+            showModal: false,
+            data: []
         };
 
         _this.onButtonClick = _this.onButtonClick.bind(_this);
-        _this.open = _this.open.bind(_this);
-        _this.close = _this.close.bind(_this);
         return _this;
     }
 
-    _createClass(Main, [{
+    _createClass(Home, [{
+        key: 'componentWillMount',
+        value: function componentWillMount() {
+            var _this2 = this;
+
+            _service2.default.postsCount(this.state.count).then(function (res) {
+                _this2.setState({ data: res.data });
+            }).catch(function (error) {
+                _this2.setState({ data: error });
+            });
+        }
+    }, {
         key: 'onButtonClick',
         value: function onButtonClick(event) {
             if (this.state.show) {
@@ -33096,33 +33129,70 @@ var Main = function (_Component) {
             }
         }
     }, {
-        key: 'close',
-        value: function close() {
-            this.setState({ showModal: false });
-        }
-    }, {
-        key: 'open',
-        value: function open() {
-            this.setState({ showModal: true });
-        }
-    }, {
         key: 'render',
         value: function render() {
             var show = this.state.show;
 
             return _react2.default.createElement(
-                'div',
-                { className: 'container' },
+                _reactBootstrap.Grid,
+                null,
                 _react2.default.createElement(_navbar.NavBar, null),
                 _react2.default.createElement(
                     'div',
                     { className: 'main-container home-page' },
                     _react2.default.createElement(
                         'div',
+                        { className: 'section-1' },
+                        _react2.default.createElement(
+                            _reactBootstrap.Row,
+                            null,
+                            this.state.data.map(function (post, key) {
+                                return _react2.default.createElement(
+                                    _reactBootstrap.Col,
+                                    { key: key, xs: 4 },
+                                    _react2.default.createElement(
+                                        'div',
+                                        { className: 'lists-1' },
+                                        _react2.default.createElement(
+                                            _reactRouter.Link,
+                                            { to: "post/" + post.id },
+                                            _react2.default.createElement(
+                                                'div',
+                                                { className: 'item-title' },
+                                                _react2.default.createElement('span', { dangerouslySetInnerHTML: { __html: post.title } }),
+                                                ' '
+                                            )
+                                        ),
+                                        _react2.default.createElement(
+                                            _reactRouter.Link,
+                                            { to: "post/" + post.id },
+                                            _react2.default.createElement(
+                                                'div',
+                                                { className: 'item-img' },
+                                                _react2.default.createElement('img', { src: _config2.default.img_url + 'posts/' + post.image, alt: '' })
+                                            )
+                                        ),
+                                        _react2.default.createElement(
+                                            _reactRouter.Link,
+                                            { to: "post/" + post.id },
+                                            _react2.default.createElement(
+                                                'div',
+                                                { className: 'item-excerpt' },
+                                                _react2.default.createElement('span', { dangerouslySetInnerHTML: { __html: post.content } }),
+                                                ' '
+                                            )
+                                        )
+                                    )
+                                );
+                            })
+                        )
+                    ),
+                    _react2.default.createElement(
+                        'div',
                         { className: 'bootstrap-test' },
                         _react2.default.createElement(
-                            'div',
-                            { onClick: this.onButtonClick },
+                            _reactBootstrap.Button,
+                            { bsStyle: 'primary', bsSize: 'small', onClick: this.onButtonClick },
                             'Something'
                         )
                     ),
@@ -33132,10 +33202,10 @@ var Main = function (_Component) {
         }
     }]);
 
-    return Main;
+    return Home;
 }(_react.Component);
 
-exports.default = Main;
+exports.default = Home;
 
 /***/ }),
 /* 212 */
@@ -45122,6 +45192,7 @@ var Account = function (_Component) {
 		_this.state = {
 			show: false,
 			userID: '',
+			error: '',
 			posts: [],
 			data: {
 				name: '',
@@ -45150,6 +45221,8 @@ var Account = function (_Component) {
 
 			_service2.default.account().then(function (res) {
 				_this2.setState({ data: res.data, userID: res.data.id });
+			}).catch(function (error) {
+				_this2.setState({ error: error });
 			});
 		}
 	}, {
@@ -45159,29 +45232,36 @@ var Account = function (_Component) {
 
 			_service2.default.postsUser().then(function (res) {
 				_this3.setState({ posts: res.data });
-				console.log(res.data);
+			}).catch(function (error) {
+				_this3.setState({ error: error });
 			});
 		}
 	}, {
 		key: 'DeleteUser',
 		value: function DeleteUser() {
-			_service2.default.deleteuser(this.state.userID).then(function (data) {
+			var _this4 = this;
+
+			_service2.default.deleteUser(this.state.userID).then(function (data) {
 				if (data.success) {
 					window.localStorage.removeItem('user');
 					_reactRouter.hashHistory.push('/home');
 				}
+			}).catch(function (error) {
+				_this4.setState({ error: error });
 			});
 		}
 	}, {
 		key: 'editUser',
 		value: function editUser(e) {
-			var _this4 = this;
+			var _this5 = this;
 
 			e.preventDefault();
-			_service2.default.edituser(this.state.userID, this.state.data).then(function (data) {
+			_service2.default.editUser(this.state.userID, this.state.data).then(function (data) {
 				if (data.success) {
-					_this4.handleClose();
+					_this5.handleClose();
 				}
+			}).catch(function (error) {
+				_this5.setState({ error: error });
 			});
 		}
 	}, {
@@ -45197,9 +45277,18 @@ var Account = function (_Component) {
 		key: 'render',
 		value: function render() {
 			return _react2.default.createElement(
-				'div',
-				{ className: 'container' },
+				_reactBootstrap.Grid,
+				null,
 				_react2.default.createElement(_navbar.NavBar, null),
+				this.state.error ? _react2.default.createElement(
+					_reactBootstrap.ListGroup,
+					{ className: 'error-mesage' },
+					_react2.default.createElement(
+						_reactBootstrap.ListGroupItem,
+						{ bsStyle: 'danger' },
+						_react2.default.createElement('span', { dangerouslySetInnerHTML: { __html: this.state.error } })
+					)
+				) : '',
 				_react2.default.createElement(
 					'div',
 					{ className: 'account-section' },
@@ -45326,10 +45415,16 @@ var Account = function (_Component) {
 								this.state.posts.map(function (post, key) {
 									return _react2.default.createElement(
 										_reactRouter.Link,
-										{ key: key, to: "add-post" },
+										{ key: key, to: "edit-post/" + post.id },
 										_react2.default.createElement(
-											'div',
+											'p',
 											{ className: 'item-post' },
+											_react2.default.createElement(
+												'span',
+												null,
+												key + 1,
+												') '
+											),
 											_react2.default.createElement('span', { dangerouslySetInnerHTML: { __html: post.title } })
 										)
 									);
@@ -45480,7 +45575,7 @@ exports.default = Posts;
 
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+		value: true
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -45510,78 +45605,91 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var Post = function (_Component) {
-  _inherits(Post, _Component);
+		_inherits(Post, _Component);
 
-  function Post(props) {
-    _classCallCheck(this, Post);
+		function Post(props) {
+				_classCallCheck(this, Post);
 
-    var _this = _possibleConstructorReturn(this, (Post.__proto__ || Object.getPrototypeOf(Post)).call(this, props));
+				var _this = _possibleConstructorReturn(this, (Post.__proto__ || Object.getPrototypeOf(Post)).call(this, props));
 
-    _this.state = {
-      postID: _this.props.params.postId,
-      data: {
-        image: 'no.png'
-      }
-    };
-    return _this;
-  }
+				_this.state = {
+						postID: _this.props.params.postId,
+						error: '',
+						data: {
+								image: 'no.png'
+						}
+				};
+				return _this;
+		}
 
-  _createClass(Post, [{
-    key: 'componentWillMount',
-    value: function componentWillMount() {
-      var _this2 = this;
+		_createClass(Post, [{
+				key: 'componentWillMount',
+				value: function componentWillMount() {
+						var _this2 = this;
 
-      _service2.default.post(this.state.postID).then(function (res) {
-        if (res.success) {
-          _this2.setState({ data: res.data });
-        }
-      });
-    }
-  }, {
-    key: 'render',
-    value: function render() {
-      return _react2.default.createElement(
-        'div',
-        { className: 'container' },
-        _react2.default.createElement(_navbar.NavBar, null),
-        _react2.default.createElement(
-          'div',
-          { className: 'post-section' },
-          _react2.default.createElement(
-            _reactBootstrap.Row,
-            null,
-            _react2.default.createElement(
-              _reactBootstrap.Col,
-              { xs: 9 },
-              _react2.default.createElement(
-                'h2',
-                { className: 'post-title' },
-                this.state.data.title
-              ),
-              _react2.default.createElement(
-                'div',
-                { className: 'post-title' },
-                this.state.data.created_at
-              ),
-              _react2.default.createElement(
-                'div',
-                { className: 'post-image' },
-                _react2.default.createElement('img', { src: _config2.default.img_url + 'posts/' + this.state.data.image, alt: '' })
-              ),
-              _react2.default.createElement(
-                'div',
-                { className: 'post-excerpt' },
-                _react2.default.createElement('span', { dangerouslySetInnerHTML: { __html: this.state.data.content } }),
-                ' '
-              )
-            )
-          )
-        )
-      );
-    }
-  }]);
+						_service2.default.post(this.state.postID).then(function (res) {
+								if (res.success) {
+										_this2.setState({ data: res.data });
+								} else {
+										_this2.setState({ error: res.message });
+								}
+						}).catch(function (error) {
+								_this2.setState({ error: error });
+						});
+				}
+		}, {
+				key: 'render',
+				value: function render() {
+						return _react2.default.createElement(
+								_reactBootstrap.Grid,
+								null,
+								_react2.default.createElement(_navbar.NavBar, null),
+								_react2.default.createElement(
+										'div',
+										{ className: 'post-section' },
+										this.state.error ? _react2.default.createElement(
+												_reactBootstrap.ListGroup,
+												{ className: 'error-mesage' },
+												_react2.default.createElement(
+														_reactBootstrap.ListGroupItem,
+														{ bsStyle: 'danger' },
+														_react2.default.createElement('span', { dangerouslySetInnerHTML: { __html: this.state.error } })
+												)
+										) : _react2.default.createElement(
+												_reactBootstrap.Row,
+												null,
+												_react2.default.createElement(
+														_reactBootstrap.Col,
+														{ xs: 9 },
+														_react2.default.createElement(
+																'h2',
+																{ className: 'post-title' },
+																this.state.data.title
+														),
+														_react2.default.createElement(
+																'div',
+																{ className: 'post-title' },
+																this.state.data.created_at
+														),
+														_react2.default.createElement(
+																'div',
+																{ className: 'post-image' },
+																_react2.default.createElement('img', { src: _config2.default.img_url + 'posts/' + this.state.data.image, alt: '' })
+														),
+														_react2.default.createElement(
+																'div',
+																{ className: 'post-excerpt' },
+																_react2.default.createElement('span', { dangerouslySetInnerHTML: { __html: this.state.data.content } }),
+																' '
+														)
+												)
+										)
+								)
+						);
+				}
+		}]);
 
-  return Post;
+		return Post;
 }(_react.Component);
 
 exports.default = Post;
@@ -45907,7 +46015,7 @@ var AddPost = function (_Component) {
 
       e.preventDefault();
 
-      _service2.default.addpost(this.state.postData).then(function (res) {
+      _service2.default.addPost(this.state.postData).then(function (res) {
         if (res.success) {
           _reactRouter.hashHistory.push('/account');
         } else {
@@ -45940,12 +46048,10 @@ var AddPost = function (_Component) {
       }
       this.state.postData[inputName] = inputValue;
       this.setState(this.state);
-      console.log(this.state.postData);
     }
   }, {
     key: 'render',
     value: function render() {
-      console.log(this.state.error);
       return _react2.default.createElement(
         'div',
         { className: 'container' },
@@ -45976,7 +46082,7 @@ var AddPost = function (_Component) {
                     null,
                     'Content:'
                   ),
-                  _react2.default.createElement(_reactBootstrap.FormControl, { componentClass: 'textarea', name: 'content', onChange: this.changeHandle }),
+                  _react2.default.createElement(_reactBootstrap.FormControl, { componentClass: 'textarea', rows: 10, name: 'content', onChange: this.changeHandle }),
                   _react2.default.createElement(
                     _reactBootstrap.ControlLabel,
                     null,
@@ -46035,6 +46141,261 @@ var AddPost = function (_Component) {
 }(_react.Component);
 
 exports.default = AddPost;
+
+/***/ }),
+/* 367 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactRouter = __webpack_require__(21);
+
+var _reactBootstrap = __webpack_require__(18);
+
+var _service = __webpack_require__(29);
+
+var _service2 = _interopRequireDefault(_service);
+
+var _navbar = __webpack_require__(32);
+
+var _config = __webpack_require__(30);
+
+var _config2 = _interopRequireDefault(_config);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var EdirPost = function (_Component) {
+  _inherits(EdirPost, _Component);
+
+  function EdirPost(props) {
+    _classCallCheck(this, EdirPost);
+
+    var _this = _possibleConstructorReturn(this, (EdirPost.__proto__ || Object.getPrototypeOf(EdirPost)).call(this, props));
+
+    _this.state = {
+      postID: _this.props.params.postId,
+      error: '',
+      category: [],
+      postData: {
+        title: '',
+        content: '',
+        status: '',
+        image: 'no.png',
+        categories: []
+      }
+    };
+    _this.changeHandle = _this.changeHandle.bind(_this);
+    return _this;
+  }
+
+  _createClass(EdirPost, [{
+    key: 'componentWillMount',
+    value: function componentWillMount() {
+      var _this2 = this;
+
+      _service2.default.post(this.state.postID).then(function (res) {
+        _this2.state.postData.title = res.data.title;
+        _this2.state.postData.content = res.data.content;
+        _this2.state.postData.status = res.data.status;
+        _this2.state.postData.image = res.data.image;
+        _this2.setState(_this2.state);
+      }).catch(function (error) {
+        _this2.setState({ error: error });
+        console.log(_this2.state.error);
+      });
+    }
+  }, {
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      var _this3 = this;
+
+      _service2.default.categories().then(function (res) {
+        _this3.setState({ category: res.data.data });
+      }).catch(function (error) {
+        _this3.setState({ error: error });
+      });
+    }
+  }, {
+    key: 'editPost',
+    value: function editPost(e) {
+      var _this4 = this;
+
+      e.preventDefault();
+      _service2.default.editPost(this.state.postID, this.state.postData).then(function (res) {
+        if (res.success) {
+          _reactRouter.hashHistory.push('/account');
+        } else {
+          _this4.state.error = 'title required';
+        }
+      }).catch(function (error) {
+        _this4.setState({ error: error });
+      });
+    }
+  }, {
+    key: 'deletePost',
+    value: function deletePost() {
+      var _this5 = this;
+
+      _service2.default.deletePost(this.state.postID).then(function (data) {
+        if (data.success) {
+          _reactRouter.hashHistory.push('/account');
+        }
+      }).catch(function (error) {
+        _this5.setState({ error: error });
+      });
+    }
+  }, {
+    key: 'changeHandle',
+    value: function changeHandle(e) {
+      var inputName = e.target.getAttribute('name');
+      var inputValue = '';
+      var value = [];
+      if (e.target.type === 'checkbox') {
+        inputValue = e.target.checked;
+      } else if (e.target.type === 'select-multiple') {
+        var options = e.target.options;
+        for (var i = 0, l = options.length; i < l; i++) {
+          if (options[i].selected) {
+            value.push(options[i].value);
+          }
+        }
+        inputValue = value;
+      } else if (e.target.type === 'file') {
+        var inputFile = document.querySelector('input[type="file"]');
+        var data = new FormData();
+        inputValue = inputFile.files[0];
+      } else {
+        inputValue = e.target.value;
+      }
+      this.state.postData[inputName] = inputValue;
+      this.setState(this.state);
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      return _react2.default.createElement(
+        _reactBootstrap.Grid,
+        null,
+        _react2.default.createElement(_navbar.NavBar, null),
+        _react2.default.createElement(
+          'div',
+          { className: 'post-section' },
+          this.state.error ? _react2.default.createElement(
+            _reactBootstrap.ListGroup,
+            { className: 'error-mesage' },
+            _react2.default.createElement(
+              _reactBootstrap.ListGroupItem,
+              { bsStyle: 'danger' },
+              _react2.default.createElement('span', { dangerouslySetInnerHTML: { __html: this.state.error } })
+            )
+          ) : _react2.default.createElement(
+            _reactBootstrap.Row,
+            null,
+            _react2.default.createElement(
+              _reactBootstrap.Col,
+              { xs: 2 },
+              _react2.default.createElement(
+                _reactBootstrap.Button,
+                { bsSize: 'xsmall', bsStyle: 'danger', onClick: this.deletePost.bind(this) },
+                'Delete'
+              )
+            ),
+            _react2.default.createElement(
+              _reactBootstrap.Col,
+              { xs: 8 },
+              _react2.default.createElement(
+                'form',
+                { onSubmit: this.editPost.bind(this) },
+                _react2.default.createElement(
+                  _reactBootstrap.FormGroup,
+                  null,
+                  _react2.default.createElement(
+                    _reactBootstrap.ControlLabel,
+                    null,
+                    'Title:'
+                  ),
+                  _react2.default.createElement(_reactBootstrap.FormControl, { type: 'text', name: 'title', value: this.state.postData.title, onChange: this.changeHandle }),
+                  _react2.default.createElement(
+                    _reactBootstrap.ControlLabel,
+                    null,
+                    'Content:'
+                  ),
+                  _react2.default.createElement(_reactBootstrap.FormControl, { componentClass: 'textarea', rows: 10, name: 'content', value: this.state.postData.content, onChange: this.changeHandle }),
+                  _react2.default.createElement(
+                    _reactBootstrap.ControlLabel,
+                    null,
+                    'Image:'
+                  ),
+                  _react2.default.createElement(_reactBootstrap.FormControl, { type: 'file', name: 'image', onChange: this.changeHandle }),
+                  _react2.default.createElement(
+                    _reactBootstrap.Checkbox,
+                    { name: 'status', checked: this.state.postData.status == "publish" ? "checked" : "", onChange: this.changeHandle },
+                    'Status'
+                  ),
+                  _react2.default.createElement(
+                    _reactBootstrap.FormGroup,
+                    null,
+                    _react2.default.createElement(
+                      _reactBootstrap.ControlLabel,
+                      null,
+                      'Catedory'
+                    ),
+                    _react2.default.createElement(
+                      _reactBootstrap.FormControl,
+                      { name: 'catedories', componentClass: 'select', multiple: true, onChange: this.changeHandle },
+                      this.state.category.map(function (cat, key) {
+                        return _react2.default.createElement(
+                          'option',
+                          { key: key, value: cat.id },
+                          cat.name
+                        );
+                      })
+                    )
+                  ),
+                  this.state.error ? _react2.default.createElement(
+                    _reactBootstrap.ListGroup,
+                    { className: 'error-mesage' },
+                    _react2.default.createElement(
+                      _reactBootstrap.ListGroupItem,
+                      { bsStyle: 'danger' },
+                      _react2.default.createElement('span', { dangerouslySetInnerHTML: { __html: this.state.error } })
+                    )
+                  ) : '',
+                  _react2.default.createElement(
+                    _reactBootstrap.Button,
+                    { onClick: this.editPost.bind(this), type: 'submit', className: 'create_account submit-form', name: 'create_account', bsStyle: 'primary', bsSize: 'small' },
+                    'Edit Post'
+                  )
+                )
+              )
+            )
+          )
+        )
+      );
+    }
+  }]);
+
+  return EdirPost;
+}(_react.Component);
+
+exports.default = EdirPost;
 
 /***/ })
 /******/ ]);
