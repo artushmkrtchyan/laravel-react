@@ -20,3 +20,43 @@ img {
 	width: 100%;
 	height: auto;
 }
+
+.home-page .section {
+	margin-bottom: 30px;
+}
+
+.home-page .item-title {
+	font-size: 20px;
+	color: #000;
+}
+
+.product-title,
+.post-title{
+	font-size: 20px;
+	color: #000;
+}
+
+.home-page .item-excerpt,
+.post-excerpt,
+.product-excerpt {
+	color: #403f3f;
+	height: 63px;
+	overflow: hidden;
+	padding: 5px 0;
+}
+
+.home-page .item-excerpt:hover {
+	color: #000;
+}
+
+.post-excerpt:hover {
+	color: #000;
+}
+
+.product-excerpt:hover {
+	color: #000;
+}
+
+a {
+	text-decoration: none !important;
+}

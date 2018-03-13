@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import {Form, FormGroup, ControlLabel, FormControl, Button, Checkbox, Col, Row, Modal, ListGroup, ListGroupItem} from 'react-bootstrap';
 import { hashHistory } from 'react-router';
+import TwitterLogin from 'react-twitter-auth';
+import GitHubLogin from 'react-github-login';
 import Services from '../service';
 import config from '../../config';
 
@@ -21,6 +23,8 @@ export class SignUp extends Component {
       }
 
       this.changeHandle = this.changeHandle.bind(this);
+      this.onFailed = this.onFailed.bind(this);
+      this.onSuccess = this.onSuccess.bind(this);
     }
 
     signup(e) {
@@ -112,6 +116,9 @@ export class SignIn extends Component {
         this.setState(this.state);
     }
 
+    onSuccess(response) {console.log(response)};
+    onFailed(response) {console.error(response)};
+
   render() {
 		return (
         <form onSubmit={this.signin.bind(this)}>
@@ -127,6 +134,17 @@ export class SignIn extends Component {
                 </ListGroup> : ''
                }
               <Button className="login submit-form" name="login" type="submit" bsStyle="primary" bsSize="small">Sign In</Button>
+              <TwitterLogin loginUrl="http://local.laravel/api/v1/auth/twitter"
+                      onFailure={this.onFailed}
+                      onSuccess={this.onSuccess}
+                      requestTokenUrl="http://local.laravel/api/v1/auth/twitter/callback"
+                      showIcon={true} />
+
+              <GitHubLogin clientId="9577f5533e94f2ea31c2"
+                      redirectUri="http://local.laravel/auth/github/callback"
+                      onSuccess={this.onSuccess}
+                      onFailure={this.onFailed}/>
+
           </FormGroup>
         </form>
     );

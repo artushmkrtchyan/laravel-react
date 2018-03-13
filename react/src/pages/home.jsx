@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { NavBar } from '../components/navbar.jsx';
+import HomePosts from '../components/posts.jsx';
+import HomeProducts from '../components/products.jsx';
 import { Grid, Button, Row, Col } from 'react-bootstrap';
 import { Link } from 'react-router';
 import Services from '../service';
@@ -43,27 +45,8 @@ export default class Home extends Component {
             <Grid>
               <NavBar></NavBar>
               <div className="main-container home-page">
-                  <div className="section-1">
-                      <Row>
-          		    		{
-          		  				this.state.data.map( (post, key) => (
-          	              <Col key={key}  xs={4}>
-          		      				<div className="lists-1">
-          										<Link to={"post/"+post.id}>
-          				        					<div className="item-title"><span dangerouslySetInnerHTML={{__html: post.title}}></span> </div>
-          				            </Link>
-          										<Link to={"post/"+post.id}>
-          				        					<div className="item-img"><img src={config.img_url+'posts/'+post.image} alt="" /></div>
-          				            </Link>
-          										<Link to={"post/"+post.id}>
-          				                  <div className="item-excerpt"><span dangerouslySetInnerHTML={{__html: post.content}}></span> </div>
-          				            </Link>
-          		      				</div>
-          	              </Col>
-          		  				))
-          		    		}
-          	         </Row>
-                  </div>
+                  <HomePosts></HomePosts>
+                  <HomeProducts></HomeProducts>
                   <div className="bootstrap-test">
                       <Button bsStyle="primary" bsSize="small" onClick={this.onButtonClick}>Something</Button>
                   </div>

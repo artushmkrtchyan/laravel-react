@@ -18,5 +18,6 @@ export default {
 
 	products: () => fetcher('/products'),
 	product: productID => fetcher('/products/'+productID),
+	productsCount: count => fetcher('/products?count='+count),
 	categories: () => fetcher('/category'),
 }
