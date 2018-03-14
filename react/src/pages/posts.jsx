@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import {Col, Row, container } from 'react-bootstrap';
+import {Col, Row, Grid } from 'react-bootstrap';
 import { Link } from 'react-router';
 import Services from '../service'
-
+import Footer from '../components/footer.jsx';
 import { NavBar } from '../components/navbar.jsx';
 import config from '../../config';
 
@@ -21,13 +21,15 @@ export default class Posts extends Component {
 		Services.posts()
 		.then( res => {
 			this.setState({data: res.data.data})
-		})
+		}).catch(error => {
+      this.setState({data: error})
+    })
 	}
 
   render() {
 		return (
 
-      <div className="container">
+      <Grid>
         <NavBar></NavBar>
         	<div className="posts-section">
 	        	<Row>
@@ -50,7 +52,8 @@ export default class Posts extends Component {
 		    		}
 	         </Row>
         </div>
-      </div>
+				<Footer></Footer>
+      </Grid>
     );
   }
 }

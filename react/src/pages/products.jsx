@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import {Col, Row } from 'react-bootstrap';
+import {Col, Row, Grid } from 'react-bootstrap';
 import { Link } from 'react-router';
 import Services from '../service'
 import { NavBar } from '../components/navbar.jsx';
+import Footer from '../components/footer.jsx';
 import config from '../../config';
 
 export default class Products extends Component {
@@ -50,6 +51,7 @@ export default class Products extends Component {
 	    		}
 	          	</Row>
 	        </div>
+					<Footer></Footer>
         </div>
     );
   }

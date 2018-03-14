@@ -3,6 +3,7 @@ import { hashHistory } from 'react-router';
 import {Grid, Form, FormGroup, checked, ControlLabel, FormControl, Button, Checkbox, Col, Row, Modal, ListGroup, ListGroupItem} from 'react-bootstrap';
 import Services from '../service'
 import { NavBar } from '../components/navbar.jsx';
+import Footer from '../components/footer.jsx';
 import config from '../../config';
 
 export default class EdirPost extends Component {
@@ -145,6 +146,7 @@ export default class EdirPost extends Component {
   	          	</Row>
               }
   	        </div>
+						<Footer></Footer>
         </Grid>
     );
   }

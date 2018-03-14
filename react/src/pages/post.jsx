@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {Grid, Col, Row, container, ListGroup, ListGroupItem } from 'react-bootstrap';
 import Services from '../service'
 import { NavBar } from '../components/navbar.jsx';
+import Footer from '../components/footer.jsx';
 import config from '../../config';
 
 export default class Post extends Component {
@@ -51,6 +52,7 @@ export default class Post extends Component {
 		          	</Row>
 							}
 		        </div>
+						<Footer></Footer>
         </Grid>
     );
   }

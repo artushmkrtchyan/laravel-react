@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { NavBar } from '../components/navbar.jsx';
+import Footer from '../components/footer.jsx';
 import HomePosts from '../components/posts.jsx';
 import HomeProducts from '../components/products.jsx';
 import { Grid, Button, Row, Col } from 'react-bootstrap';
@@ -13,12 +14,9 @@ export default class Home extends Component {
 
         this.state = {
           count: 3,
-          show:false,
-          showModal:false,
           data: []
         }
 
-        this.onButtonClick = this.onButtonClick.bind(this);
     }
 
     componentWillMount() {
@@ -39,21 +37,14 @@ export default class Home extends Component {
     }
 
     render() {
-        let show = this.state.show;
-
         return (
             <Grid>
-              <NavBar></NavBar>
-              <div className="main-container home-page">
-                  <HomePosts></HomePosts>
-                  <HomeProducts></HomeProducts>
-                  <div className="bootstrap-test">
-                      <Button bsStyle="primary" bsSize="small" onClick={this.onButtonClick}>Something</Button>
-                  </div>
-                  {
-                      show ? "asdasdasdasdasd" : "chka"
-                  }
-              </div>
+                <NavBar></NavBar>
+                <div className="main-container home-page">
+                    <HomePosts></HomePosts>
+                    <HomeProducts></HomeProducts>
+                </div>
+                <Footer></Footer>
             </Grid>
         );
     }

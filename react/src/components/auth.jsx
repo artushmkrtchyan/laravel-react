@@ -23,8 +23,6 @@ export class SignUp extends Component {
       }
 
       this.changeHandle = this.changeHandle.bind(this);
-      this.onFailed = this.onFailed.bind(this);
-      this.onSuccess = this.onSuccess.bind(this);
     }
 
     signup(e) {
@@ -93,6 +91,9 @@ export class SignIn extends Component {
       }
 
       this.changeHandle = this.changeHandle.bind(this);
+
+      this.onFailed = this.onFailed.bind(this);
+      this.onSuccess = this.onSuccess.bind(this);
     }
 
     signin(e) {

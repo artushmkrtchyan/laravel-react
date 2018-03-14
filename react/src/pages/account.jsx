@@ -3,6 +3,7 @@ import {Grid,Form, FormGroup, ControlLabel, FormControl, ListGroup, ListGroupIte
 import { hashHistory, Link } from 'react-router';
 import Services from '../service';
 import { NavBar } from '../components/navbar.jsx';
+import Footer from '../components/footer.jsx';
 import config from '../../config';
 
 export default class Account extends Component {
@@ -155,6 +156,7 @@ componentDidMount() {
 		                </Col>
 		          	</Row>
 		        </div>
+						<Footer></Footer>
         </Grid>
     );
   }
