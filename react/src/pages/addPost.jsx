@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { hashHistory } from 'react-router';
-import {Grid, Form, FormGroup, ControlLabel, FormControl, Button, Checkbox, Col, Row, Modal, ListGroup, ListGroupItem} from 'react-bootstrap';
+import {Grid, Form, FormGroup, ControlLabel, FormControl, HelpBlock, Button, Checkbox, Col, Row, Modal, ListGroup, ListGroupItem} from 'react-bootstrap';
 import Services from '../service'
 import { NavBar } from '../components/navbar.jsx';
 import Footer from '../components/footer.jsx';
@@ -13,6 +13,7 @@ export default class AddPost extends Component {
 
 			this.state = {
 				error: '',
+				validation: '',
         category: [],
         postData: {
           title: '',
@@ -35,15 +36,23 @@ export default class AddPost extends Component {
 	addNewPost(e) {
 
     e.preventDefault()
+		let formData = new FormData();
+		formData.append('image', this.state.postData.image);
+		formData.append('title', this.state.postData.title);
+		formData.append('content', this.state.postData.content);
+		formData.append('status', this.state.postData.status);
+		formData.append('categories', this.state.postData.categories);
 
-		Services.addPost(this.state.postData)
+		Services.addPost(formData)
 		.then( res => {
         if(res.success){
     			hashHistory.push('/account')
         }else{
-					this.state.error = 'title required';
+					this.setState({validation: res.error})
 				}
-		})
+		}).catch(error => {
+      this.setState({error: error})
+    })
 	}
 
   changeHandle(e) {
@@ -62,7 +71,6 @@ export default class AddPost extends Component {
         inputValue = value;
       }else if(e.target.type === 'file') {
         let inputFile = document.querySelector('input[type="file"]')
-        let data = new FormData()
         inputValue = inputFile.files[0];
       }else{
         inputValue = e.target.value
@@ -80,29 +88,45 @@ export default class AddPost extends Component {
 		          	<Row>
 	                  <Col xsOffset={2} xs={8}>
 	                    <form onSubmit={this.addNewPost.bind(this)}>
-	                        <FormGroup>
+	                        <FormGroup validationState={this.state.validation.title ? "error" : null}>
 	                            <ControlLabel>Title:</ControlLabel>
 	                            <FormControl type="text" name="title" onChange={this.changeHandle} />
+															{this.state.validation.title ?
+																<HelpBlock>{this.state.validation.title}</HelpBlock>
+																: ""
+															}
+													</FormGroup>
+													<FormGroup validationState={this.state.validation.content ? "error" : null}>
 	                            <ControlLabel>Content:</ControlLabel>
 	                            <FormControl componentClass="textarea" rows={10} name="content" onChange={this.changeHandle} />
-	                            <ControlLabel>Image:</ControlLabel>
-	                            <FormControl type="file" name="image" onChange={this.changeHandle} />
+															{this.state.validation.content ?
+																<HelpBlock>{this.state.validation.content}</HelpBlock>
+																: ""
+															}
+													</FormGroup>
+													<FormGroup>
+	                            <ControlLabel className="file-image" htmlFor="image"><i className="fa fa-camera"></i>Image</ControlLabel>
+	                            <FormControl id="image" className="hidden" type="file" name="image" onChange={this.changeHandle} />
+													</FormGroup>
 	                            <Checkbox name="status" onChange={this.changeHandle}>Status</Checkbox>
-	                            <FormGroup>
-	                              <ControlLabel>Catedory</ControlLabel>
-	                              <FormControl name="catedories" componentClass="select" multiple  onChange={this.changeHandle}>
+	                        <FormGroup>
+	                              <ControlLabel>Category</ControlLabel>
+													</FormGroup>
+													<FormGroup>
+	                              <FormControl name="categories" componentClass="select" multiple  onChange={this.changeHandle}>
 	                                {
 	                                  this.state.category.map( (cat, key) => (
 	                                    <option key={key} value={cat.id}>{cat.name}</option>
 	                                  ))
 	                                }
 	                              </FormControl>
-	                            </FormGroup>
+	                        </FormGroup>
 	                            {this.state.error ?
 	                              <ListGroup className="error-mesage">
 	                                <ListGroupItem bsStyle="danger"><span dangerouslySetInnerHTML={{__html: this.state.error}}></span></ListGroupItem>
 	                              </ListGroup> : ''
 	                             }
+													<FormGroup>
 	                            <Button onClick={this.addNewPost.bind(this)} type="submit" className="create_account submit-form" name="create_account" bsStyle="primary" bsSize="small">Add</Button>
 	                        </FormGroup>
 	                    </form>

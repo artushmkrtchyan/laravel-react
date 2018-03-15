@@ -42,7 +42,8 @@ export default class Account extends Component {
 		.then( res => {
 			this.setState({data: res.data, userID:res.data.id})
 		}).catch(error => {
-      this.setState({error: error})
+			window.localStorage.removeItem('user');
+			hashHistory.push('/home');
     })
 	}
 

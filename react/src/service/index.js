@@ -1,8 +1,8 @@
-import { fetcher } from './fetch'
+import { fetcher, uploadFetcher } from './fetch'
 
 export default {
 	login: credentials => fetcher('/login', 'POST', credentials),
-	register: Register => fetcher('/register', 'POST', Register),
+	register: Register => uploadFetcher('/register', 'POST', Register),
 	logout: () => fetcher('/logout', 'POST'),
 	account: () => fetcher('/details', 'POST'),
 	deleteUser: userID => fetcher('/users/'+userID, 'DELETE'),
@@ -12,7 +12,7 @@ export default {
 	posts: () => fetcher('/posts'),
 	postsCount: count => fetcher('/posts?count='+count),
 	post: postID => fetcher('/posts/'+postID),
-	addPost: postData => fetcher('/posts', 'POST', postData),
+	addPost: postData => uploadFetcher('/posts', 'POST', postData),
 	editPost: (postID, postData) => fetcher('/posts/'+postID, 'PUT', postData),
 	deletePost: postID => fetcher('/posts/'+postID, 'DELETE'),
 

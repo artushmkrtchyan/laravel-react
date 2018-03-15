@@ -1591,7 +1591,7 @@ exports.default = {
 		return (0, _fetch.fetcher)('/login', 'POST', credentials);
 	},
 	register: function register(Register) {
-		return (0, _fetch.fetcher)('/register', 'POST', Register);
+		return (0, _fetch.uploadFetcher)('/register', 'POST', Register);
 	},
 	logout: function logout() {
 		return (0, _fetch.fetcher)('/logout', 'POST');
@@ -1619,7 +1619,7 @@ exports.default = {
 		return (0, _fetch.fetcher)('/posts/' + postID);
 	},
 	addPost: function addPost(postData) {
-		return (0, _fetch.fetcher)('/posts', 'POST', postData);
+		return (0, _fetch.uploadFetcher)('/posts', 'POST', postData);
 	},
 	editPost: function editPost(postID, postData) {
 		return (0, _fetch.fetcher)('/posts/' + postID, 'PUT', postData);
@@ -44865,6 +44865,7 @@ var SignUp = exports.SignUp = function (_Component) {
     var _this = _possibleConstructorReturn(this, (SignUp.__proto__ || Object.getPrototypeOf(SignUp)).call(this, props));
 
     _this.state = {
+      validation: '',
       register_data: {
         name: '',
         email: '',
@@ -44886,15 +44887,20 @@ var SignUp = exports.SignUp = function (_Component) {
       var _this2 = this;
 
       e.preventDefault();
+      var formData = new FormData();
+      formData.append('name', this.state.register_data.name);
+      formData.append('email', this.state.register_data.email);
+      formData.append('password', this.state.register_data.password);
+      formData.append('password_confirmation', this.state.register_data.password_confirmation);
+      formData.append('description', this.state.register_data.description);
+      formData.append('avatar', this.state.register_data.avatar);
 
-      _service2.default.register(this.state.register_data).then(function (data) {
+      _service2.default.register(formData).then(function (data) {
         if ('token' in data) {
           window.localStorage.setItem('user', data.token);
           _reactRouter.hashHistory.push('/account');
-        } else if (data.error.email) {
-          _this2.setState({ data: data.error.email });
-        } else if (data.error.password) {
-          _this2.setState({ data: data.error.password });
+        } else {
+          _this2.setState({ validation: data.error });
         }
       });
     }
@@ -44903,8 +44909,13 @@ var SignUp = exports.SignUp = function (_Component) {
     value: function changeHandle(e) {
       var input_name = e.target.getAttribute('name');
       var input_value = e.target.value;
-      this.state.register_data[input_name] = input_value;
 
+      if (e.target.type === 'file') {
+        var inputFile = document.querySelector('input[type="file"]');
+        input_value = inputFile.files[0];
+      }
+
+      this.state.register_data[input_name] = input_value;
       this.setState(this.state);
     }
   }, {
@@ -44915,37 +44926,83 @@ var SignUp = exports.SignUp = function (_Component) {
         { onSubmit: this.signup.bind(this) },
         _react2.default.createElement(
           _reactBootstrap.FormGroup,
-          null,
+          { validationState: this.state.validation.name ? "error" : null },
           _react2.default.createElement(
             _reactBootstrap.ControlLabel,
             null,
             'Name:'
           ),
           _react2.default.createElement(_reactBootstrap.FormControl, { name: 'name', type: 'input', onChange: this.changeHandle }),
+          this.state.validation.name ? _react2.default.createElement(
+            _reactBootstrap.HelpBlock,
+            null,
+            this.state.validation.name
+          ) : ""
+        ),
+        _react2.default.createElement(
+          _reactBootstrap.FormGroup,
+          { validationState: this.state.validation.email ? "error" : null },
           _react2.default.createElement(
             _reactBootstrap.ControlLabel,
             null,
             'Email:'
           ),
           _react2.default.createElement(_reactBootstrap.FormControl, { name: 'email', type: 'email', onChange: this.changeHandle }),
+          this.state.validation.email ? _react2.default.createElement(
+            _reactBootstrap.HelpBlock,
+            null,
+            this.state.validation.email
+          ) : ""
+        ),
+        _react2.default.createElement(
+          _reactBootstrap.FormGroup,
+          { validationState: this.state.validation.password ? "error" : null },
           _react2.default.createElement(
             _reactBootstrap.ControlLabel,
             null,
             'Password:'
           ),
           _react2.default.createElement(_reactBootstrap.FormControl, { name: 'password', type: 'password', onChange: this.changeHandle }),
+          this.state.validation.password ? _react2.default.createElement(
+            _reactBootstrap.HelpBlock,
+            null,
+            this.state.validation.password
+          ) : ""
+        ),
+        _react2.default.createElement(
+          _reactBootstrap.FormGroup,
+          null,
           _react2.default.createElement(
             _reactBootstrap.ControlLabel,
             null,
             'Confirm Password:'
           ),
-          _react2.default.createElement(_reactBootstrap.FormControl, { name: 'password_confirmation', type: 'password', onChange: this.changeHandle }),
+          _react2.default.createElement(_reactBootstrap.FormControl, { name: 'password_confirmation', type: 'password', onChange: this.changeHandle })
+        ),
+        _react2.default.createElement(
+          _reactBootstrap.FormGroup,
+          null,
           _react2.default.createElement(
             _reactBootstrap.ControlLabel,
             null,
             'Description:'
           ),
-          _react2.default.createElement(_reactBootstrap.FormControl, { componentClass: 'textarea', name: 'description', onChange: this.changeHandle }),
+          _react2.default.createElement(_reactBootstrap.FormControl, { componentClass: 'textarea', name: 'description', onChange: this.changeHandle })
+        ),
+        _react2.default.createElement(
+          _reactBootstrap.FormGroup,
+          null,
+          _react2.default.createElement(
+            _reactBootstrap.ControlLabel,
+            { className: 'file-image', htmlFor: 'image' },
+            _react2.default.createElement('i', { className: 'fa fa-camera' }),
+            'Image'
+          ),
+          _react2.default.createElement(_reactBootstrap.FormControl, { id: 'image', className: 'hidden', type: 'file', name: 'avatar', onChange: this.changeHandle })
+        ),
+        _react2.default.createElement(
+          _reactBootstrap.FormGroup,
+          null,
           this.state.data ? _react2.default.createElement(
             _reactBootstrap.ListGroup,
             { className: 'error-mesage' },
@@ -44954,7 +45011,11 @@ var SignUp = exports.SignUp = function (_Component) {
               { bsStyle: 'danger' },
               _react2.default.createElement('span', { dangerouslySetInnerHTML: { __html: this.state.data } })
             )
-          ) : '',
+          ) : ''
+        ),
+        _react2.default.createElement(
+          _reactBootstrap.FormGroup,
+          null,
           _react2.default.createElement(
             _reactBootstrap.Button,
             { onClick: this.signup.bind(this), type: 'submit', className: 'create_account submit-form', name: 'create_account', bsStyle: 'primary', bsSize: 'small' },
@@ -47239,6 +47300,7 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 exports.fetcher = fetcher;
+exports.uploadFetcher = uploadFetcher;
 
 var _config = __webpack_require__(20);
 
@@ -47261,6 +47323,30 @@ function fetcher(url) {
 	if (method.toLowerCase() !== 'get') {
 		options.method = method;
 		options.body = JSON.stringify(body);
+	}
+
+	if (token) {
+		options.headers.Authorization = 'Bearer ' + token;
+	}
+
+	return fetch(_config2.default.api_url + url, options).then(function (res) {
+		return res.json();
+	});
+}
+
+function uploadFetcher(url) {
+	var method = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'GET';
+	var body = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+
+
+	var options = {
+		headers: {}
+	};
+	var token = window.localStorage.getItem('user');
+
+	if (method.toLowerCase() !== 'get') {
+		options.method = method;
+		options.body = body;
 	}
 
 	if (token) {
@@ -47621,7 +47707,8 @@ var Account = function (_Component) {
 			_service2.default.account().then(function (res) {
 				_this2.setState({ data: res.data, userID: res.data.id });
 			}).catch(function (error) {
-				_this2.setState({ error: error });
+				window.localStorage.removeItem('user');
+				_reactRouter.hashHistory.push('/home');
 			});
 		}
 	}, {
@@ -48425,6 +48512,7 @@ var AddPost = function (_Component) {
 
 				_this.state = {
 						error: '',
+						validation: '',
 						category: [],
 						postData: {
 								title: '',
@@ -48453,13 +48541,21 @@ var AddPost = function (_Component) {
 						var _this3 = this;
 
 						e.preventDefault();
+						var formData = new FormData();
+						formData.append('image', this.state.postData.image);
+						formData.append('title', this.state.postData.title);
+						formData.append('content', this.state.postData.content);
+						formData.append('status', this.state.postData.status);
+						formData.append('categories', this.state.postData.categories);
 
-						_service2.default.addPost(this.state.postData).then(function (res) {
+						_service2.default.addPost(formData).then(function (res) {
 								if (res.success) {
 										_reactRouter.hashHistory.push('/account');
 								} else {
-										_this3.state.error = 'title required';
+										_this3.setState({ validation: res.error });
 								}
+						}).catch(function (error) {
+								_this3.setState({ error: error });
 						});
 				}
 		}, {
@@ -48480,7 +48576,6 @@ var AddPost = function (_Component) {
 								inputValue = value;
 						} else if (e.target.type === 'file') {
 								var inputFile = document.querySelector('input[type="file"]');
-								var data = new FormData();
 								inputValue = inputFile.files[0];
 						} else {
 								inputValue = e.target.value;
@@ -48509,59 +48604,86 @@ var AddPost = function (_Component) {
 																{ onSubmit: this.addNewPost.bind(this) },
 																_react2.default.createElement(
 																		_reactBootstrap.FormGroup,
-																		null,
+																		{ validationState: this.state.validation.title ? "error" : null },
 																		_react2.default.createElement(
 																				_reactBootstrap.ControlLabel,
 																				null,
 																				'Title:'
 																		),
 																		_react2.default.createElement(_reactBootstrap.FormControl, { type: 'text', name: 'title', onChange: this.changeHandle }),
+																		this.state.validation.title ? _react2.default.createElement(
+																				_reactBootstrap.HelpBlock,
+																				null,
+																				this.state.validation.title
+																		) : ""
+																),
+																_react2.default.createElement(
+																		_reactBootstrap.FormGroup,
+																		{ validationState: this.state.validation.content ? "error" : null },
 																		_react2.default.createElement(
 																				_reactBootstrap.ControlLabel,
 																				null,
 																				'Content:'
 																		),
 																		_react2.default.createElement(_reactBootstrap.FormControl, { componentClass: 'textarea', rows: 10, name: 'content', onChange: this.changeHandle }),
+																		this.state.validation.content ? _react2.default.createElement(
+																				_reactBootstrap.HelpBlock,
+																				null,
+																				this.state.validation.content
+																		) : ""
+																),
+																_react2.default.createElement(
+																		_reactBootstrap.FormGroup,
+																		null,
+																		_react2.default.createElement(
+																				_reactBootstrap.ControlLabel,
+																				{ className: 'file-image', htmlFor: 'image' },
+																				_react2.default.createElement('i', { className: 'fa fa-camera' }),
+																				'Image'
+																		),
+																		_react2.default.createElement(_reactBootstrap.FormControl, { id: 'image', className: 'hidden', type: 'file', name: 'image', onChange: this.changeHandle })
+																),
+																_react2.default.createElement(
+																		_reactBootstrap.Checkbox,
+																		{ name: 'status', onChange: this.changeHandle },
+																		'Status'
+																),
+																_react2.default.createElement(
+																		_reactBootstrap.FormGroup,
+																		null,
 																		_react2.default.createElement(
 																				_reactBootstrap.ControlLabel,
 																				null,
-																				'Image:'
-																		),
-																		_react2.default.createElement(_reactBootstrap.FormControl, { type: 'file', name: 'image', onChange: this.changeHandle }),
+																				'Category'
+																		)
+																),
+																_react2.default.createElement(
+																		_reactBootstrap.FormGroup,
+																		null,
 																		_react2.default.createElement(
-																				_reactBootstrap.Checkbox,
-																				{ name: 'status', onChange: this.changeHandle },
-																				'Status'
-																		),
+																				_reactBootstrap.FormControl,
+																				{ name: 'categories', componentClass: 'select', multiple: true, onChange: this.changeHandle },
+																				this.state.category.map(function (cat, key) {
+																						return _react2.default.createElement(
+																								'option',
+																								{ key: key, value: cat.id },
+																								cat.name
+																						);
+																				})
+																		)
+																),
+																this.state.error ? _react2.default.createElement(
+																		_reactBootstrap.ListGroup,
+																		{ className: 'error-mesage' },
 																		_react2.default.createElement(
-																				_reactBootstrap.FormGroup,
-																				null,
-																				_react2.default.createElement(
-																						_reactBootstrap.ControlLabel,
-																						null,
-																						'Catedory'
-																				),
-																				_react2.default.createElement(
-																						_reactBootstrap.FormControl,
-																						{ name: 'catedories', componentClass: 'select', multiple: true, onChange: this.changeHandle },
-																						this.state.category.map(function (cat, key) {
-																								return _react2.default.createElement(
-																										'option',
-																										{ key: key, value: cat.id },
-																										cat.name
-																								);
-																						})
-																				)
-																		),
-																		this.state.error ? _react2.default.createElement(
-																				_reactBootstrap.ListGroup,
-																				{ className: 'error-mesage' },
-																				_react2.default.createElement(
-																						_reactBootstrap.ListGroupItem,
-																						{ bsStyle: 'danger' },
-																						_react2.default.createElement('span', { dangerouslySetInnerHTML: { __html: this.state.error } })
-																				)
-																		) : '',
+																				_reactBootstrap.ListGroupItem,
+																				{ bsStyle: 'danger' },
+																				_react2.default.createElement('span', { dangerouslySetInnerHTML: { __html: this.state.error } })
+																		)
+																) : '',
+																_react2.default.createElement(
+																		_reactBootstrap.FormGroup,
+																		null,
 																		_react2.default.createElement(
 																				_reactBootstrap.Button,
 																				{ onClick: this.addNewPost.bind(this), type: 'submit', className: 'create_account submit-form', name: 'create_account', bsStyle: 'primary', bsSize: 'small' },
@@ -48625,17 +48747,18 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var EdirPost = function (_Component) {
-  _inherits(EdirPost, _Component);
+var EditPost = function (_Component) {
+  _inherits(EditPost, _Component);
 
-  function EdirPost(props) {
-    _classCallCheck(this, EdirPost);
+  function EditPost(props) {
+    _classCallCheck(this, EditPost);
 
-    var _this = _possibleConstructorReturn(this, (EdirPost.__proto__ || Object.getPrototypeOf(EdirPost)).call(this, props));
+    var _this = _possibleConstructorReturn(this, (EditPost.__proto__ || Object.getPrototypeOf(EditPost)).call(this, props));
 
     _this.state = {
       postID: _this.props.params.postId,
       error: '',
+      validation: '',
       category: [],
       postData: {
         title: '',
@@ -48649,7 +48772,7 @@ var EdirPost = function (_Component) {
     return _this;
   }
 
-  _createClass(EdirPost, [{
+  _createClass(EditPost, [{
     key: 'componentWillMount',
     value: function componentWillMount() {
       var _this2 = this;
@@ -48662,7 +48785,6 @@ var EdirPost = function (_Component) {
         _this2.setState(_this2.state);
       }).catch(function (error) {
         _this2.setState({ error: error });
-        console.log(_this2.state.error);
       });
     }
   }, {
@@ -48682,11 +48804,19 @@ var EdirPost = function (_Component) {
       var _this4 = this;
 
       e.preventDefault();
+
+      // let formData = new FormData();
+      // formData.append('image', this.state.postData.image);
+      // formData.append('title', this.state.postData.title);
+      // formData.append('content', this.state.postData.content);
+      // formData.append('status', this.state.postData.status);
+      // formData.append('categories', this.state.postData.categories);
+
       _service2.default.editPost(this.state.postID, this.state.postData).then(function (res) {
         if (res.success) {
           _reactRouter.hashHistory.push('/account');
         } else {
-          _this4.state.error = 'title required';
+          _this4.setState({ validation: res.error });
         }
       }).catch(function (error) {
         _this4.setState({ error: error });
@@ -48756,9 +48886,18 @@ var EdirPost = function (_Component) {
               _reactBootstrap.Col,
               { xs: 2 },
               _react2.default.createElement(
-                _reactBootstrap.Button,
-                { bsSize: 'xsmall', bsStyle: 'danger', onClick: this.deletePost.bind(this) },
-                'Delete'
+                'div',
+                { className: 'delete_post' },
+                _react2.default.createElement(
+                  _reactBootstrap.Button,
+                  { bsSize: 'xsmall', bsStyle: 'danger', onClick: this.deletePost.bind(this) },
+                  'Delete Post'
+                )
+              ),
+              _react2.default.createElement(
+                'div',
+                { className: 'post-image' },
+                _react2.default.createElement('img', { src: _config2.default.img_url + 'posts/' + this.state.postData.image, alt: '' })
               )
             ),
             _react2.default.createElement(
@@ -48769,59 +48908,86 @@ var EdirPost = function (_Component) {
                 { onSubmit: this.editPost.bind(this) },
                 _react2.default.createElement(
                   _reactBootstrap.FormGroup,
-                  null,
+                  { validationState: this.state.validation.title ? "error" : null },
                   _react2.default.createElement(
                     _reactBootstrap.ControlLabel,
                     null,
                     'Title:'
                   ),
                   _react2.default.createElement(_reactBootstrap.FormControl, { type: 'text', name: 'title', value: this.state.postData.title, onChange: this.changeHandle }),
+                  this.state.validation.title ? _react2.default.createElement(
+                    _reactBootstrap.HelpBlock,
+                    null,
+                    this.state.validation.title
+                  ) : ""
+                ),
+                _react2.default.createElement(
+                  _reactBootstrap.FormGroup,
+                  { validationState: this.state.validation.content ? "error" : null },
                   _react2.default.createElement(
                     _reactBootstrap.ControlLabel,
                     null,
                     'Content:'
                   ),
                   _react2.default.createElement(_reactBootstrap.FormControl, { componentClass: 'textarea', rows: 10, name: 'content', value: this.state.postData.content, onChange: this.changeHandle }),
+                  this.state.validation.content ? _react2.default.createElement(
+                    _reactBootstrap.HelpBlock,
+                    null,
+                    this.state.validation.content
+                  ) : ""
+                ),
+                _react2.default.createElement(
+                  _reactBootstrap.FormGroup,
+                  null,
                   _react2.default.createElement(
                     _reactBootstrap.ControlLabel,
-                    null,
-                    'Image:'
+                    { className: 'file-image', htmlFor: 'image' },
+                    _react2.default.createElement('i', { className: 'fa fa-camera' }),
+                    'Image'
                   ),
-                  _react2.default.createElement(_reactBootstrap.FormControl, { type: 'file', name: 'image', onChange: this.changeHandle }),
+                  _react2.default.createElement(_reactBootstrap.FormControl, { id: 'image', className: 'hidden', type: 'file', name: 'image', onChange: this.changeHandle })
+                ),
+                _react2.default.createElement(
+                  _reactBootstrap.FormGroup,
+                  null,
                   _react2.default.createElement(
                     _reactBootstrap.Checkbox,
                     { name: 'status', checked: this.state.postData.status == "publish" ? "checked" : "", onChange: this.changeHandle },
                     'Status'
+                  )
+                ),
+                _react2.default.createElement(
+                  _reactBootstrap.FormGroup,
+                  null,
+                  _react2.default.createElement(
+                    _reactBootstrap.ControlLabel,
+                    null,
+                    'Category'
                   ),
                   _react2.default.createElement(
-                    _reactBootstrap.FormGroup,
-                    null,
-                    _react2.default.createElement(
-                      _reactBootstrap.ControlLabel,
-                      null,
-                      'Catedory'
-                    ),
-                    _react2.default.createElement(
-                      _reactBootstrap.FormControl,
-                      { name: 'catedories', componentClass: 'select', multiple: true, onChange: this.changeHandle },
-                      this.state.category.map(function (cat, key) {
-                        return _react2.default.createElement(
-                          'option',
-                          { key: key, value: cat.id },
-                          cat.name
-                        );
-                      })
-                    )
-                  ),
-                  this.state.error ? _react2.default.createElement(
-                    _reactBootstrap.ListGroup,
-                    { className: 'error-mesage' },
-                    _react2.default.createElement(
-                      _reactBootstrap.ListGroupItem,
-                      { bsStyle: 'danger' },
-                      _react2.default.createElement('span', { dangerouslySetInnerHTML: { __html: this.state.error } })
-                    )
-                  ) : '',
+                    _reactBootstrap.FormControl,
+                    { name: 'categories', componentClass: 'select', multiple: true, onChange: this.changeHandle },
+                    this.state.category.map(function (cat, key) {
+                      return _react2.default.createElement(
+                        'option',
+                        { key: key, value: cat.id },
+                        cat.name
+                      );
+                    })
+                  )
+                ),
+                this.state.error ? _react2.default.createElement(
+                  _reactBootstrap.ListGroup,
+                  { className: 'error-mesage' },
+                  _react2.default.createElement(
+                    _reactBootstrap.ListGroupItem,
+                    { bsStyle: 'danger' },
+                    _react2.default.createElement('span', { dangerouslySetInnerHTML: { __html: this.state.error } })
+                  )
+                ) : '',
+                _react2.default.createElement(
+                  _reactBootstrap.FormGroup,
+                  null,
                   _react2.default.createElement(
                     _reactBootstrap.Button,
                     { onClick: this.editPost.bind(this), type: 'submit', className: 'create_account submit-form', name: 'create_account', bsStyle: 'primary', bsSize: 'small' },
@@ -48837,10 +49003,10 @@ var EdirPost = function (_Component) {
     }
   }]);
 
-  return EdirPost;
+  return EditPost;
 }(_react.Component);
 
-exports.default = EdirPost;
+exports.default = EditPost;
 
 /***/ }),
 /* 372 */

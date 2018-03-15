@@ -106,3 +106,13 @@ a {
 .rss-container {
     background: #cd201f;
 }
+
+.file-image i {
+	font-size: 20px;
+	margin-right: 10px;
+	cursor: pointer;
+}
+
+.delete_post {
+	margin-bottom: 10px;
+}
