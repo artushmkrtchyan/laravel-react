@@ -105,8 +105,8 @@ componentDidMount() {
 												<img src={config.img_url+'avatars/'+this.state.data.avatar} alt="" />
 											</div>
 											<div className="user-setings">
-												<Button bsSize="xsmall" bsStyle="danger" onClick={this.DeleteUser.bind(this)}>Delete</Button>
-												<Button bsSize="xsmall" onClick={this.handleShow}>Edit</Button>
+												<Button bsSize="xsmall" bsStyle="danger" onClick={this.DeleteUser.bind(this)}>Delete Profile</Button>
+												<Button bsSize="xsmall" onClick={this.handleShow}>Edit Profile</Button>
 												<Link to={"add-post"}>
 													<Button bsSize="xsmall">Add Post</Button>
 												</Link>

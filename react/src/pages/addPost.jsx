@@ -11,6 +11,10 @@ export default class AddPost extends Component {
 	constructor(props) {
 			super(props);
 
+			if(!window.localStorage.getItem('user')){
+				hashHistory.push('/home');
+			}
+			
 			this.state = {
 				error: '',
 				validation: '',

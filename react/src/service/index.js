@@ -6,7 +6,7 @@ export default {
 	logout: () => fetcher('/logout', 'POST'),
 	account: () => fetcher('/details', 'POST'),
 	deleteUser: userID => fetcher('/users/'+userID, 'DELETE'),
-	editUser: (userID, EditUser) => fetcher('/users/'+userID, 'PUT', EditUser),
+	editUser: (userID, userData) => fetcher('/users/'+userID, 'PUT', userData),
 	postsUser: () =>fetcher('/userposts', 'POST'),
 
 	posts: () => fetcher('/posts'),

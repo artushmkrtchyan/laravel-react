@@ -11,6 +11,10 @@ export default class EditPost extends Component {
 	constructor(props) {
 			super(props);
 
+			if(!window.localStorage.getItem('user')){
+				hashHistory.push('/home');
+			}
+
 			this.state = {
 				postID: this.props.params.postId,
         error: '',
