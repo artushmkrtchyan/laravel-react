@@ -25,9 +25,17 @@ img {
 	margin-bottom: 30px;
 }
 
-.home-page .item-title {
-	font-size: 20px;
+.home-page .item-title span {
+	font-size: 17px;
 	color: #000;
+	height: 50px;
+	overflow: hidden;
+	display: block;
+}
+
+.home-page .item-img {
+	height: 230px;
+	overflow: hidden;
 }
 
 .product-title,
@@ -51,6 +59,25 @@ img {
 
 .post-excerpt:hover {
 	color: #000;
+}
+
+.posts-section .post-title span,
+.products-section .product-title span{
+	height: 45px;
+	overflow: hidden;
+	display: block;
+	font-size: 15px;
+}
+
+.posts-section .post-img,
+.products-section .product-img {
+	height: 175px;
+	overflow: hidden;
+}
+
+.posts-section .post-item ,
+.products-section .product-item {
+	margin-bottom: 20px;
 }
 
 .product-excerpt:hover {
