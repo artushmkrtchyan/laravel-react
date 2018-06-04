@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Button, Col, Row, Modal } from 'react-bootstrap';
+import {Button, Modal } from 'react-bootstrap';
 import { hashHistory } from 'react-router';
 import {SignIn, SignUp} from './auth.jsx';
 import Services from '../service'
@@ -53,7 +53,7 @@ export class AuthModal extends Component {
       <div className="account-buttons">
           <div className="main-modal">
           {
-            this.state.token ? <div><span className="sign-up" onClick={this.logOut}>Logout</span><span className="account" onClick={() => { hashHistory.push('account') }}>Account</span></div> : 
+            this.state.token ? <div><span className="sign-up" onClick={this.logOut}>Logout</span><span className="account" onClick={() => { hashHistory.push('account') }}>Account</span></div> :
             <div><span className="sign-in" onClick={this.openIn}>Sign In</span><span className="sign-up" onClick={this.openUp}>Sign up</span></div>
           }
 

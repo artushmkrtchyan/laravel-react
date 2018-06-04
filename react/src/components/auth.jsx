@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import {Form, FormGroup, ControlLabel, FormControl, HelpBlock, Button, Checkbox, Col, Row, Modal, ListGroup, ListGroupItem} from 'react-bootstrap';
+import {Form, FormGroup, ControlLabel, FormControl, HelpBlock, Button, Checkbox, ListGroup, ListGroupItem} from 'react-bootstrap';
 import { hashHistory } from 'react-router';
 import TwitterLogin from 'react-twitter-auth';
 import GitHubLogin from 'react-github-login';
 import Services from '../service';
-import config from '../../config';
+import config from '../config';
 
 export class SignUp extends Component {
   constructor(props) {
@@ -63,7 +63,7 @@ export class SignUp extends Component {
 
   render() {
 		return (
-        <form onSubmit={this.signup.bind(this)}>
+        <Form onSubmit={this.signup.bind(this)}>
           <FormGroup validationState={this.state.validation.name ? "error" : null}>
               <ControlLabel>Name:</ControlLabel>
               <FormControl name="name" type="input" onChange={this.changeHandle} />
@@ -110,7 +110,7 @@ export class SignUp extends Component {
           <FormGroup>
               <Button onClick={this.signup.bind(this)} type="submit" className="create_account submit-form" name="create_account" bsStyle="primary" bsSize="small">Sign Up</Button>
           </FormGroup>
-        </form>
+        </Form>
     )
   }
 }

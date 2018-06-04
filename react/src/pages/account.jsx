@@ -4,7 +4,7 @@ import { hashHistory, Link } from 'react-router';
 import Services from '../service';
 import { NavBar } from '../components/navbar.jsx';
 import Footer from '../components/footer.jsx';
-import config from '../../config';
+import config from '../config';
 
 export default class Account extends Component {
 
@@ -115,7 +115,7 @@ componentDidMount() {
 					                  <Modal.Title>Edit account</Modal.Title>
 					                </Modal.Header>
 					                <Modal.Body>
-														<form onSubmit={this.editUser.bind(this)}>
+														<Form onSubmit={this.editUser.bind(this)}>
 										            <FormGroup>
 										                <ControlLabel>Name:</ControlLabel>
 										                <FormControl name="name" type="input" value={this.state.data.name} onChange={this.changeHandle} />
@@ -126,7 +126,7 @@ componentDidMount() {
 
 										                <Button onClick={this.editUser.bind(this)} type="submit" className="edit_account submit-form" name="edit_account" bsStyle="primary" bsSize="small">Edit</Button>
 										            </FormGroup>
-										        </form>
+										        </Form>
 					                </Modal.Body>
 					                <Modal.Footer>
 					                  <Button onClick={this.handleClose}>Close</Button>

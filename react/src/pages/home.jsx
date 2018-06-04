@@ -6,7 +6,7 @@ import HomeProducts from '../components/products.jsx';
 import { Grid, Button, Row, Col } from 'react-bootstrap';
 import { Link } from 'react-router';
 import Services from '../service';
-import config from '../../config';
+import config from '../config';
 
 export default class Home extends Component {
     constructor(props) {

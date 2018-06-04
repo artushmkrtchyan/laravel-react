@@ -4,7 +4,7 @@ import {Grid, Form, FormGroup, HelpBlock, checked, ControlLabel, FormControl, Bu
 import Services from '../service'
 import { NavBar } from '../components/navbar.jsx';
 import Footer from '../components/footer.jsx';
-import config from '../../config';
+import config from '../config';
 
 export default class EditPost extends Component {
 

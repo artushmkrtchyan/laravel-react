@@ -3,7 +3,7 @@ import {Grid, Col, Row, ListGroup, ListGroupItem  } from 'react-bootstrap';
 import Services from '../service'
 import { NavBar } from '../components/navbar.jsx';
 import Footer from '../components/footer.jsx';
-import config from '../../config';
+import config from '../config';
 
 export default class Product extends Component {
 

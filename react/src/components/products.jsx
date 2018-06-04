@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { Grid, Button, Row, Col } from 'react-bootstrap';
+import { Row, Col } from 'react-bootstrap';
 import { Link } from 'react-router';
 import Services from '../service';
-import config from '../../config';
+import config from '../config';
 
 export default class HomeProducts extends Component {
     constructor(props) {

@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
-import {Col, Row,} from 'react-bootstrap';
-import {hashHistory} from 'react-router';
+import { Col } from 'react-bootstrap';
 
 export default class Footer extends Component {
 	render() {
 		return (
       <footer className="footer clearfix">
-        
+
             <Col xs={12} sm={8}>
             </Col>
 

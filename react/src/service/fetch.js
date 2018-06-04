@@ -1,4 +1,4 @@
-import cnf from '../../config'
+import cnf from '../config'
 
 export function fetcher(url, method = 'GET', body = {}) {
 

@@ -1,17 +1,18 @@
 import React, { Component } from 'react';
 import {Grid, Col, Row, ListGroup, ListGroupItem } from 'react-bootstrap';
+import YouTube from 'react-youtube';
 import Services from '../service'
 import { NavBar } from '../components/navbar.jsx';
 import Footer from '../components/footer.jsx';
 import config from '../config';
 
-export default class Post extends Component {
+export default class Film extends Component {
 
 	constructor(props) {
 			super(props);
 
 			this.state = {
-        postID: this.props.params.postId,
+        filmID: this.props.params.filmId,
 				error: '',
         data: {
           image: 'no.png'
@@ -20,7 +21,7 @@ export default class Post extends Component {
 		}
 
 	componentWillMount() {
-		Services.post(this.state.postID)
+		Services.film(this.state.filmID)
 		.then( res => {
         if(res.success){
     			this.setState({data: res.data})
@@ -33,6 +34,13 @@ export default class Post extends Component {
 	}
 
   render() {
+    const opts = {
+      height: '390',
+      width: '640',
+      playerVars: {
+        autoplay: 0
+      }
+    };
 		return (
         <Grid>
 	        <NavBar></NavBar>
@@ -45,9 +53,25 @@ export default class Post extends Component {
 		          	<Row>
 	                  <Col xs={9}>
 	                    <h2 className="post-title">{this.state.data.title}</h2>
-	                    <div className="post-title">{this.state.data.created_at}</div>
-	                    <div className="post-image"><img src={config.img_url+'posts/'+this.state.data.image} alt="" /></div>
-	                    <div className="post-excerpt"><span dangerouslySetInnerHTML={{__html: this.state.data.content}}></span> </div>
+	                    <span className="date">Year: {this.state.data.year}</span><hr/>
+                      <div className="film-excerpt"><span dangerouslySetInnerHTML={{__html: this.state.data.description}}></span> </div>
+                      {
+                        this.state.data.youtube_id ?
+                        <div className="videoWrapper">
+                          <YouTube
+                            videoId={this.state.data.youtube_id}
+                            opts={opts}
+                          />
+              					</div>
+                        : ''
+                      }
+                      {
+                        this.state.data.vidio_embed ?
+                        <div className="videoWrapper">
+            					         <span dangerouslySetInnerHTML={{__html: this.state.data.vidio_embed}}></span>
+            					   </div>
+                       : ''
+                     }
 	                  </Col>
 		          	</Row>
 							}
